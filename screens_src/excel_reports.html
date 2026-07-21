@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="en" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Geist:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "on-surface-variant": "#45464d",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-highest": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "surface-bright": "#f7f9fb",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-container": "#75859d",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed-dim": "#7bd0ff",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#004d6a",
+                    "outline": "#76777d",
+                    "surface-tint": "#565e74",
+                    "on-secondary-fixed": "#001e2c",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#40c2fd",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "on-background": "#191c1e",
+                    "on-surface": "#191c1e",
+                    "on-primary-fixed": "#131b2e",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "secondary": "#00668a",
+                    "tertiary-fixed": "#d3e4fe",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-dim": "#d8dadc",
+                    "on-primary-container": "#7c839b",
+                    "outline-variant": "#c6c6cd",
+                    "tertiary": "#000000",
+                    "on-secondary-fixed-variant": "#004c69",
+                    "tertiary-container": "#0b1c30",
+                    "inverse-primary": "#bec6e0",
+                    "inverse-on-surface": "#eff1f3",
+                    "secondary-fixed": "#c4e7ff",
+                    "surface-container-high": "#e6e8ea",
+                    "error": "#ba1a1a",
+                    "surface": "#f7f9fb",
+                    "primary": "#000000",
+                    "primary-fixed-dim": "#bec6e0",
+                    "background": "#f7f9fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "stack-xs": "4px",
+                    "margin-page": "40px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "unit": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "code-sm": ["JetBrains Mono"],
+                    "headline-sm": ["Geist"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-screen w-[280px] border-r border-outline-variant bg-surface flex flex-col py-stack-lg px-stack-md z-50">
+<div class="mb-stack-lg px-2">
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">RTP Automation</h1>
+<p class="font-label-md text-label-md text-on-surface-variant tracking-wider uppercase">Mission Control</p>
+</div>
+<div class="flex-1 space-y-1">
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group">
+<span class="material-symbols-outlined" data-original-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group"><span class="material-symbols-outlined">smart_toy</span><span class="font-body-md">AI Chatbot</span></a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group">
+<span class="material-symbols-outlined" data-original-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-body-md">Processing</span>
+</a>
+<!-- Active Tab -->
+<a href="#" class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" data-original-icon="description">description</span>
+<span class="font-body-md">Excel Manager</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md">Security</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg group">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md">Help</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-stack-md">
+<button class="w-full ai-gradient-btn text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary-container" data-original-icon="auto_awesome">auto_awesome</span>
+                Auto-Extract
+            </button>
+<div class="space-y-1">
+<a href="#" class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg">
+<span class="material-symbols-outlined" data-original-icon="account_circle">account_circle</span>
+<span class="font-body-md">User Profile</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg">
+<span class="material-symbols-outlined text-error">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input type="text" placeholder="Filter by document type..." class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm w-80 focus:ring-2 focus:ring-secondary-container focus:outline-none transition-all">
+</div>
+<nav class="flex gap-6">
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all">AI Monitor</a>
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all">Queue</a>
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 bg-surface border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-all">System Health</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-label-md text-label-md hover:opacity-90 transition-all">New Upload</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="relative group/notifications">
+  <button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2 transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden')">notifications</button>
+  <!-- Notification Dropdown -->
+  <div class="hidden absolute right-0 mt-2 w-80 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-lg z-50 overflow-hidden">
+    <div class="p-4 border-b border-outline-variant flex justify-between items-center">
+      <h3 class="font-headline-sm text-sm font-bold text-on-surface">Notifications</h3>
+      <button class="text-label-md text-secondary hover:underline">Mark all as read</button>
+    </div>
+    <div class="divide-y divide-outline-variant">
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <p class="font-body-md text-sm text-on-surface font-semibold">Refinery_Report_Q3.pdf processing complete</p>
+        <p class="text-xs text-on-surface-variant mt-1">10 mins ago</p>
+      </div>
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <p class="font-body-md text-sm text-on-surface">New operator added: <span class="font-semibold">Robert Tiller</span></p>
+        <p class="text-xs text-on-surface-variant mt-1">2 hours ago</p>
+      </div>
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span>
+          <p class="font-body-md text-sm text-on-surface">System Health: Optimal</p>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-1">4 hours ago</p>
+      </div>
+    </div>
+    <a href="#" class="block p-3 text-center text-label-md text-on-surface-variant hover:bg-surface-container-low border-t border-outline-variant transition-colors">View all notifications</a>
+  </div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">shield_person</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a lead software engineer in a high-tech corporate office environment. The person is smiling confidently, wearing modern professional attire. Soft industrial daylight illuminates the scene, with a blurred high-tech control room in the background featuring digital monitors and sleek hardware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHc7Z1_vmpYbPefLaa2tdiig1Q8s0DFHyYdrVNoQYzyrPAlQmETD-EU0UI-6bSDFG5jD-HKzcmIloLKCB2aq4uCkwmZn77ZUYHV6FEpFkUKe5YED6C-iRCKT1GnyaWzqJs3tcDwyhgnP8AHHhmzyrdjPU-79e4IzZ_TPD2RdIFHQtTki8EAuItHPKLDEBja2rOBJA0zEI17T1bVDnP-hOXG_5Tvbb3C2WCWJLU3UkY_eN0UrJOo0-yv2jAqSj8sCFpmH6qJfQJQ77f">
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[280px] pt-16 min-h-screen flex flex-col">
+<div class="flex-1 p-margin-page">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-xs">Excel Output Manager</h2>
+<p class="text-on-surface-variant font-body-md max-w-2xl">Manage and audit your AI-generated extraction reports. All files are encrypted and processed through our refinery-grade precision engine.</p>
+</div>
+<div class="flex gap-stack-md">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-highest transition-all" id="bulkDownloadBtn">
+<span class="material-symbols-outlined text-body-sm">download_for_offline</span>
+                        Download Selected
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-body-sm">calendar_today</span>
+                        Filter by date
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Stats (Contextual) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
+<div class="glass-panel p-stack-md rounded-xl">
+<p class="font-label-md text-on-surface-variant uppercase mb-1">Total Reports</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-on-surface">1,284</span>
+<span class="text-xs text-secondary font-bold">+12%</span>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-xl">
+<p class="font-label-md text-on-surface-variant uppercase mb-1">Total Data Volume</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-on-surface">4.2 GB</span>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-xl">
+<p class="font-label-md text-on-surface-variant uppercase mb-1">AI Confidence Avg.</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-on-surface">98.4%</span>
+<div class="w-12 h-1 bg-secondary-container rounded-full overflow-hidden">
+<div class="w-11/12 h-full bg-secondary"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-stack-md rounded-xl">
+<p class="font-label-md text-on-surface-variant uppercase mb-1">Security Status</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-headline-md text-on-surface text-sm">Refinery Grade</span>
+</div>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="glass-panel rounded-xl overflow-hidden border border-outline-variant" id="tableContainer">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-gutter py-4 w-12">
+<input class="rounded border-outline-variant text-secondary focus:ring-secondary-container cursor-pointer" onclick="toggleAll(this)" type="checkbox">
+</th>
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Filename</th>
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Source Document</th>
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Created Date</th>
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">File Size</th>
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant" id="reportRows">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-gutter py-4">
+<input class="row-check rounded border-outline-variant text-secondary focus:ring-secondary-container cursor-pointer" type="checkbox">
+</td>
+<td class="px-gutter py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">description</span>
+<div>
+<p class="font-body-md font-semibold text-on-surface">Extraction_Report_2026_01.xlsx</p>
+<p class="text-xs text-on-surface-variant font-code-sm">ID: RTP-992-AX</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Inbound_Logistics_Q1.pdf</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Oct 24, 2026 14:20</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant text-right">2.4 MB</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-secondary-container rounded-lg text-on-surface-variant hover:text-on-secondary-container transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-gutter py-4">
+<input class="row-check rounded border-outline-variant text-secondary focus:ring-secondary-container cursor-pointer" type="checkbox">
+</td>
+<td class="px-gutter py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">description</span>
+<div class="">
+<p class="font-body-md font-semibold text-on-surface">Supply_Audit_Log_Final.xlsx</p>
+<p class="text-xs text-on-surface-variant font-code-sm">ID: RTP-881-BC</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Inventory_Master_Sheet.csv</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Oct 22, 2026 09:15</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant text-right">840 KB</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-secondary-container rounded-lg text-on-surface-variant hover:text-on-secondary-container transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="px-gutter py-4">
+<input class="row-check rounded border-outline-variant text-secondary focus:ring-secondary-container cursor-pointer" type="checkbox">
+</td>
+<td class="px-gutter py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">description</span>
+<div>
+<p class="font-body-md font-semibold text-on-surface">Efficiency_Metrics_Weekly.xlsx</p>
+<p class="text-xs text-on-surface-variant font-code-sm">ID: RTP-104-ZZ</p>
+</div>
+</div>
+</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Plant_Performance_Telemetry.txt</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant">Oct 21, 2026 18:45</td>
+<td class="px-gutter py-4 text-body-sm text-on-surface-variant text-right">1.2 MB</td>
+<td class="px-gutter py-4 text-right">
+<button class="p-2 hover:bg-secondary-container rounded-lg text-on-surface-variant hover:text-on-secondary-container transition-all">
+<span class="material-symbols-outlined">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty State (Hidden by default) -->
+<div class="hidden flex flex-col items-center justify-center py-24 text-center" id="emptyState">
+<div class="relative w-64 h-64 mb-stack-lg">
+
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-8xl text-outline-variant">file_open</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">No Excel reports generated yet</h3>
+<p class="text-on-surface-variant font-body-md mb-stack-lg max-w-sm">Upload your refinery source documents to start the AI-driven extraction process.</p>
+<button class="ai-gradient-btn text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2" onclick="toggleView()">
+<span class="material-symbols-outlined">rocket_launch</span>
+                    Start Extraction
+                </button>
+</div>
+</div>
+<!-- Footer Component -->
+<footer class="w-full mt-auto border-t border-outline-variant bg-surface-container-low py-stack-md px-margin-page ml-0 md:ml-[280px]">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-4">
+<span class="font-label-md text-label-md font-bold text-on-surface-variant">RTP Automation AI</span>
+<span class="text-on-surface-variant text-xs opacity-50">|</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2026 RTP Automation AI. Refinery Grade Security &amp; Precision.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">Compliance Protocol</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">API Documentation</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        function toggleAll(master) {
+            const checkboxes = document.querySelectorAll('.row-check');
+            checkboxes.forEach(cb => cb.checked = master.checked);
+            updateDownloadBtn();
+        }
+
+        function updateDownloadBtn() {
+            const checkedCount = document.querySelectorAll('.row-check:checked').length;
+            const btn = document.getElementById('bulkDownloadBtn');
+            if(checkedCount > 0) {
+                btn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'border-secondary');
+                btn.innerHTML = `<span class="material-symbols-outlined text-body-sm">download_for_offline</span> Download Selected (${checkedCount})`;
+            } else {
+                btn.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'border-secondary');
+                btn.innerHTML = `<span class="material-symbols-outlined text-body-sm">download_for_offline</span> Download Selected`;
+            }
+        }
+
+        document.querySelectorAll('.row-check').forEach(cb => {
+            cb.addEventListener('change', updateDownloadBtn);
+        });
+
+        // Debug Toggle function for demonstration (switches between empty state and table)
+        function toggleView() {
+            const table = document.getElementById('tableContainer');
+            const empty = document.getElementById('emptyState');
+            table.classList.toggle('hidden');
+            empty.classList.toggle('hidden');
+        }
+
+        // Add a listener for the search bar to simulate filtering
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('input', (e) => {
+            const rows = document.querySelectorAll('#reportRows tr');
+            const term = e.target.value.toLowerCase();
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+
+
+
+</body></html>
