@@ -1,0 +1,344 @@
+<!DOCTYPE html><html lang="en" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "on-surface-variant": "#45464d",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-highest": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "surface-bright": "#f7f9fb",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-container": "#75859d",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed-dim": "#7bd0ff",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-container": "#004d6a",
+                    "outline": "#76777d",
+                    "surface-tint": "#565e74",
+                    "on-secondary-fixed": "#001e2c",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#40c2fd",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "on-background": "#191c1e",
+                    "on-surface": "#191c1e",
+                    "on-primary-fixed": "#131b2e",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "secondary": "#00668a",
+                    "tertiary-fixed": "#d3e4fe",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-dim": "#d8dadc",
+                    "on-primary-container": "#7c839b",
+                    "outline-variant": "#c6c6cd",
+                    "tertiary": "#000000",
+                    "on-secondary-fixed-variant": "#004c69",
+                    "tertiary-container": "#0b1c30",
+                    "inverse-primary": "#bec6e0",
+                    "inverse-on-surface": "#eff1f3",
+                    "secondary-fixed": "#c4e7ff",
+                    "surface-container-high": "#e6e8ea",
+                    "error": "#ba1a1a",
+                    "surface": "#f7f9fb",
+                    "primary": "#000000",
+                    "primary-fixed-dim": "#bec6e0",
+                    "background": "#f7f9fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "stack-xs": "4px",
+                    "margin-page": "40px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "unit": "4px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "code-sm": ["JetBrains Mono"],
+                    "headline-sm": ["Geist"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface border-r border-outline-variant flex flex-col py-stack-lg px-stack-md z-50">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed" data-original-icon="conveyor_belt">conveyor_belt</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">RTP Automation</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Mission Control</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined" data-original-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold"><span class="material-symbols-outlined">database</span><span class="font-body-md">AI Chatbot</span></a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined" data-original-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-body-md">Processing</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined" data-original-icon="description">description</span>
+<span class="font-body-md">Excel Manager</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">security</span>
+<span class="font-body-md">Security</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 border-t border-outline-variant pt-4">
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined" data-original-icon="account_circle">account_circle</span>
+<span class="font-body-md">User Profile</span>
+</a>
+<a href="#" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-8">
+<div class="flex items-center bg-surface-container px-3 py-1.5 rounded-full border border-outline-variant w-96">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input type="text" placeholder="Search AI Chatbot..." class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-on-surface-variant">
+</div>
+<nav class="flex gap-6">
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all">AI Monitor</a>
+<a href="#" class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1">Queue</a>
+<a href="#" class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-original-icon="notifications">notifications</span>
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+                New Upload
+            </button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior chemical engineer wearing a clean white industrial safety vest and spectacles. The lighting is crisp and studio-quality, emphasizing reliability and technical expertise. The background is a blurred high-tech refinery control room with glowing blue monitors. The style is modern corporate photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtPP4ksBD5j1WUmV46ODi9Dt6mqf4JahT-xkdfYbxnB-km0kX4e8U2X_vR_p92XZnAKj8zNmShK0yiD8gO9B03Ym8sDfdImaB_ngUC7wEfBpYk2lRCFhAc4erhvNKn7-pMgvrGjP7gU6pW2Cgsp0f-_dTQWLEX-m2sfFTEYIpsZOjWwOm8V6cyzMWJCTewNKSeBgjssNeefaex2kPPw4FctzVdeDWhuK421ONpzA-t5u9_ou0le_lTsBQiNgN1rvDRarK8d9i7AaU5">
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[280px] pt-16 h-screen flex overflow-hidden">
+<!-- Active Context Sidebar (Chat Internal) -->
+<aside class="w-72 border-r border-outline-variant bg-surface-container-low flex flex-col p-stack-md shrink-0">
+<div class="flex items-center justify-between mb-stack-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Active Context</h3>
+<span class="px-2 py-0.5 bg-secondary-container text-[10px] font-bold text-on-secondary-container rounded">3 FILES</span>
+</div>
+<div class="space-y-stack-sm flex-1 overflow-y-auto custom-scrollbar">
+<!-- Document Card -->
+<div class="p-3 bg-surface border border-outline-variant rounded-xl group hover:border-secondary transition-all cursor-pointer">
+<div class="flex gap-3 items-start">
+<div class="w-12 h-16 bg-surface-container-highest rounded border border-outline-variant overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100" data-alt="A miniature high-resolution digital rendering of a technical PDF document header with the title 'Pricing Report 2026' visible. The document layout features clean typography and professional charts. The background is a subtle grey to mimic paper texture. Modern industrial styling with corporate navy accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEE8Yt3V2BhsEBdzdEW0edrbv2EKcyZcnHK0Kjv9ZUwMtRSF0JN1vwO-2dTdiev9B4K5gBxgM3s-H7zmLfReJ09BYZou8D90bep4NCH8M_nWAklNSyppw2yZO_46gVDJUttzMvAzkWU8KNW0LEFva-MmdnWTIb7kwoX4sgl8lfz8zATratHLdrvncvujVvgUwZpxTElRvMaZYLWjwOqkWaKYDsnHu7d0jf_pUQfzQehVJcD9vSLRPJRrZtUgEBlQP4mIjZFpf4Dwm4">
+</div>
+<div class="overflow-hidden">
+<h4 class="font-body-sm text-body-sm font-semibold truncate text-on-surface">Pricing_Report.pdf</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">12 Pages • 2.4 MB</p>
+<div class="flex items-center gap-1 mt-2 text-[10px] text-secondary font-bold">
+<span class="material-symbols-outlined text-[12px]">check_circle</span>
+                                INDEXED
+                            </div>
+</div>
+</div>
+</div>
+<div class="p-3 bg-surface/50 border border-outline-variant/50 rounded-xl group hover:border-secondary transition-all cursor-pointer">
+<div class="flex gap-3 items-start opacity-70">
+<div class="w-12 h-16 bg-surface-container-highest rounded border border-outline-variant overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A digital thumbnail representing a refinery maintenance log spreadsheet. Tiny grid lines and data cells are visible, with a green header row. The design is clean and technical, emphasizing data density and organizational precision. Light mode aesthetic with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6L5cAWOBRaKjLtrRvs5ThdDQHy6Ug747cNcKTySfaoZOikuQsK4KUapWhriHmBtEsanWUkNRpymLl7ksa7w9ns_8BqYdinTpoClsugbjfL4KKKPfuch-9yDK-OTTEvQ3LPS3F30L3ZGyeFX_j4BokPwCBJ1f2z7tuAZ25ZAsCzWDW7wsgwyha59rIbogMLzzMpkSL1BuM1aYITlRwaoVxX0mWC_WfNj8fkKC7TjLDVeCGxD6B8Q-uALn-sRzqxLYMpjpRvtLtUmvZ">
+</div>
+<div class="overflow-hidden">
+<h4 class="font-body-sm text-body-sm font-semibold truncate">Logistics_Log_Q3.xlsx</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">450 Rows • 1.1 MB</p>
+</div>
+</div>
+</div>
+<div class="p-3 bg-surface/50 border border-outline-variant/50 rounded-xl group hover:border-secondary transition-all cursor-pointer">
+<div class="flex gap-3 items-start opacity-70">
+<div class="w-12 h-16 bg-surface-container-highest rounded border border-outline-variant overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A visual thumbnail of an industrial compliance certificate with a golden seal icon in the center. The document looks formal and authoritative, featuring structured paragraphs and a signature line at the bottom. Clean, professional white paper texture with sharp black text." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDII8Xm9teCQyWkHGXQsQolRWixRpEZW3ciY_TKLpjiGRKh_mKthbKb79LZTdp4NvmPxrdvIUvC0VRljU4eY6yB3EQovpkCuzD4-4y4uVzVMtdOOZFtAyVF-MTSi7xYD0p8cOWKSiCX4B4JRI28aKFwOI0_bQlo5N-kVmtLSF3GoARND9WIDzunlTSAoVR-py3r9PlSjWRjIP3JfE1c0IHZZoitMeMFzPrX4HfVLnf0HucCBFTfSfaJEWzWRt5F6Er17ykqre09d-cN">
+</div>
+<div class="overflow-hidden">
+<h4 class="font-body-sm text-body-sm font-semibold truncate">Compliance_v4.pdf</h4>
+<p class="text-[11px] text-on-surface-variant mt-1">5 Pages • 0.8 MB</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 p-4 rounded-xl bg-primary-container border border-on-primary-fixed-variant">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary-fixed text-sm">bolt</span>
+<span class="text-secondary-fixed font-bold text-[11px] tracking-widest uppercase">AI Engine</span>
+</div>
+<p class="text-on-primary-container text-[12px] leading-relaxed">Cross-document analysis active. High confidence mode enabled.</p>
+</div>
+</aside>
+<!-- Chat Area -->
+<section class="flex-1 flex flex-col relative bg-surface-bright">
+<!-- Chat Header -->
+<div class="h-14 flex items-center px-stack-lg border-b border-outline-variant/30 justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-body-md font-semibold">AI Analysis Session</span>
+</div>
+<div class="flex gap-2">
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Messages Container -->
+<div class="flex-1 overflow-y-auto p-stack-lg space-y-stack-lg custom-scrollbar">
+<!-- User Message -->
+<div class="flex justify-end">
+<div class="max-w-[70%] bg-surface border border-outline-variant p-4 rounded-2xl rounded-tr-none shadow-sm">
+<p class="text-body-md text-on-surface">What is the specific refinery transfer price listed for Grade A Crude in the latest pricing report?</p>
+<span class="text-[10px] text-on-surface-variant mt-2 block text-right">10:42 AM</span>
+</div>
+</div>
+<!-- AI Message -->
+<div class="flex justify-start items-start gap-4">
+<div class="w-9 h-9 rounded-lg bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="max-w-[80%] space-y-3">
+<div class="glass-panel p-5 rounded-2xl rounded-tl-none border border-secondary/20 shadow-sm">
+<p class="text-body-md text-on-surface leading-relaxed">
+                                I've analyzed the <span class="font-bold text-secondary">Pricing_Report.pdf</span>. The refinery transfer price for Grade A Crude is <span class="bg-secondary-container px-1.5 py-0.5 rounded font-code-sm text-on-secondary-container font-bold">$72.50/bbl</span>.
+                            </p>
+<!-- Source Reference -->
+<div class="mt-4 pt-3 border-t border-outline-variant/30">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-sm text-secondary">menu_book</span>
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-tight">Source Reference</span>
+</div>
+<button class="flex items-center gap-3 p-2 bg-white/50 border border-outline-variant rounded-lg hover:border-secondary hover:bg-white transition-all text-left w-full group">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">picture_as_pdf</span>
+<div class="flex-1 overflow-hidden">
+<p class="text-[12px] font-semibold truncate text-on-surface">Pricing_Report.pdf • Page 4</p>
+<p class="text-[11px] text-on-surface-variant truncate italic">"...transfer pricing index for Grade A (Refinery 4) settled at $72.50..."</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<span class="text-[10px] text-on-surface-variant ml-1">AI Assistant • Just now</span>
+</div>
+</div>
+<!-- AI Analyzing State (Simulated) -->
+<div class="flex justify-start items-start gap-4 opacity-50">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant">smart_toy</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full border border-outline-variant">
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.2s]"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce [animation-delay:0.4s]"></div>
+</div>
+<span class="text-xs font-semibold">Analyzing additional documents...</span>
+</div>
+</div>
+</div>
+<!-- Suggested Questions -->
+<div class="px-stack-lg pb-4">
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-1.5 bg-surface border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">summarize</span>
+                        Summarize this report
+                    </button>
+<button class="px-4 py-1.5 bg-surface border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">compare_arrows</span>
+                        Compare Q2 vs Q3 pricing
+                    </button>
+<button class="px-4 py-1.5 bg-surface border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">security</span>
+                        Compliance status check
+                    </button>
+</div>
+</div>
+<!-- Input Bar -->
+<div class="p-stack-lg border-t border-outline-variant bg-surface">
+<div class="max-w-4xl mx-auto flex items-end gap-3 bg-surface-container border border-outline-variant rounded-2xl p-2.5 shadow-sm focus-within:ring-2 focus-within:ring-secondary/20 focus-within:border-secondary transition-all">
+<button class="p-2 text-on-surface-variant hover:text-secondary hover:bg-surface rounded-xl transition-all">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 text-body-md py-2.5 resize-none max-h-32 custom-scrollbar" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" placeholder="Ask anything about your files..." rows="1"></textarea>
+<button class="w-11 h-11 bg-primary text-white rounded-xl flex items-center justify-center hover:scale-[1.02] active:scale-95 transition-all shadow-md group">
+<span class="material-symbols-outlined group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">send</span>
+</button>
+</div>
+<div class="mt-2 flex justify-center">
+<p class="text-[10px] text-on-surface-variant">RTP AI can make mistakes. Verify critical data points.</p>
+</div>
+</div>
+<!-- Atmospheric Background Asset -->
+<div class="absolute inset-0 pointer-events-none opacity-[0.03] z-0">
+
+</div>
+</section>
+</main>
+<!-- Interactive script for suggested questions -->
+<script class="">
+        document.querySelectorAll('.flex-wrap button').forEach(button => {
+            button.addEventListener('click', function() {
+                const text = this.innerText.replace(/[^\w\s]/g, '').trim();
+                const textarea = document.querySelector('textarea');
+                textarea.value = text;
+                textarea.dispatchEvent(new Event('input'));
+                textarea.focus();
+            });
+        });
+
+        // Simple text-auto-resize logic already in HTML
+    </script>
+
+</body></html>
