@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTP Automation AI | Operator Gateway</title>
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;600;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS with Forms and Container Queries Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#dae2fd",
+                        "surface-container": "#eceef0",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#40c2fd",
+                        "tertiary-fixed": "#d3e4fe",
+                        "secondary": "#00668a",
+                        "tertiary-container": "#0b1c30",
+                        "on-tertiary-container": "#75859d",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed-dim": "#7bd0ff",
+                        "secondary-fixed": "#c4e7ff",
+                        "on-primary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary-fixed": "#001e2c",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "surface": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-secondary-container": "#004d6a",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "outline-variant": "#c6c6cd",
+                        "surface-bright": "#f7f9fb",
+                        "inverse-primary": "#bec6e0",
+                        "on-surface": "#191c1e",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-fixed": "#131b2e",
+                        "primary-fixed-dim": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dadc",
+                        "primary-container": "#131b2e",
+                        "primary": "#000000",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-variant": "#e0e3e5",
+                        "surface-tint": "#565e74",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#76777d",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#45464d",
+                        "tertiary": "#000000",
+                        "on-secondary-fixed-variant": "#004c69",
+                        "background": "#f7f9fb"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "margin-page": "40px",
+                        "container-max": "1440px",
+                        "stack-xs": "4px"
+                    },
+                    fontFamily: {
+                        "headline-sm": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Geist"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom stylesheet override -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col overflow-x-hidden">
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-2"></div>
+    <!-- ==================== 1. LOGIN VIEW ==================== -->
+    <div id="login-view" class="blueprint-bg min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-2xl p-8 border border-outline-variant shadow-2xl relative overflow-hidden flex flex-col">
+            <!-- Header -->
+            <div class="mb-8 text-center">
+                <div class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/20">
+                    <span class="material-symbols-outlined text-secondary-fixed text-3xl">shield_lock</span>
+                </div>
+                <h2 class="font-headline-md text-headline-md font-bold text-on-surface">RTP Automation</h2>
+                <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mt-1">Secured Operator Gateway</p>
+            </div>
+            <!-- Form -->
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="operator-email" class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Operator Email</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">account_circle</span>
+                        <input id="operator-email" type="email" required placeholder="operator@rtp-refinery.ai" 
+                            class="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-xl text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label for="operator-key" class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Secure Passkey</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">vpn_key</span>
+                        <input id="operator-key" type="password" required placeholder="••••••••••••" 
+                            class="w-full pl-10 pr-12 py-3 bg-white border border-outline-variant rounded-xl text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all">
+                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined" id="password-visibility-icon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Remember session / security compliance check -->
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="compliance-check" required class="rounded border-outline-variant text-secondary focus:ring-secondary cursor-pointer">
+                    <label for="compliance-check" class="text-xs text-on-surface-variant leading-tight cursor-pointer">
+                        I acknowledge compliance with SEC-OPS Refinery Protocol 12-A.
+                    </label>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" id="login-submit-btn" class="w-full ai-gradient-btn text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 border border-white/10 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                    <span>Login to Mission Control</span>
+                    <span class="material-symbols-outlined text-secondary-container">arrow_forward</span>
+                </button>
+            </form>
+            <!-- Bottom Note -->
+            <div class="mt-8 border-t border-outline-variant pt-6 text-center">
+                <p class="text-xs text-on-surface-variant flex items-center justify-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-secondary rounded-full animate-ping"></span>
+                    AES-256 Encrypted Session Gateway
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== 2. MAIN APPLICATION SHELL ==================== -->
+    <div id="main-layout" class="hidden flex-1 flex flex-row relative min-h-screen">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="fixed left-0 top-0 h-screen w-[280px] border-r border-outline-variant flex flex-col py-stack-lg px-stack-md bg-surface z-50">
+            <!-- Brand Logo -->
+            <div class="mb-stack-lg px-2 flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-fixed">shield_lock</span>
+                </div>
+                <div>
+                    <h1 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-none">RTP Automation</h1>
+                    <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mt-1 opacity-70">Mission Control</p>
+                </div>
+            </div>
+            <!-- Nav List -->
+            <nav id="sidebar-nav" class="flex-1 space-y-1">
+                <button data-panel="dashboard" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md">Dashboard</span>
+                </button>
+                <button data-panel="chatbot" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <span class="font-body-md">AI Chatbot</span>
+                </button>
+                <button data-panel="upload" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">upload_file</span>
+                    <span class="font-body-md">Upload Pipeline</span>
+                </button>
+                <button data-panel="extraction" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">conveyor_belt</span>
+                    <span class="font-body-md">AI Extraction</span>
+                </button>
+                <button data-panel="excel" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">description</span>
+                    <span class="font-body-md">Excel Manager</span>
+                </button>
+                <button data-panel="settings" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="font-body-md">Security & Admin</span>
+                </button>
+            </nav>
+            <!-- Bottom Navigation controls -->
+            <div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
+                <button id="sidebar-profile-btn" class="w-full flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg">
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <span class="font-body-md text-left" id="sidebar-username">Operator</span>
+                </button>
+                <button id="logout-btn" class="w-full flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container/10 transition-colors rounded-lg">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md text-left">Logout</span>
+                </button>
+            </div>
+        </aside>
+        <!-- TOP BAR HEADER AND PANELS VIEWPORT -->
+        <div class="ml-[280px] flex-1 flex flex-col min-h-screen">
+            
+            <!-- TOP APP BAR -->
+            <header class="sticky top-0 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-gutter z-40">
+                <div class="flex items-center gap-6">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                        <input type="text" id="global-search" placeholder="Filter current view contents..." 
+                            class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm w-72 focus:ring-2 focus:ring-secondary focus:outline-none transition-all">
+                    </div>
+                    <nav class="hidden md:flex gap-6">
+                        <span class="font-label-md text-label-md text-secondary font-bold flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                            AI ENGINE ONLINE
+                        </span>
+                    </nav>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="topbar-health-btn" class="px-4 py-2 bg-surface border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-green-600 text-sm">check_circle</span>
+                        System Health
+                    </button>
+                    <button id="topbar-upload-btn" class="px-4 py-2 bg-primary text-white rounded-lg font-label-md text-label-md hover:opacity-90 transition-all">
+                        New Upload
+                    </button>
+                    <div class="h-8 w-[1px] bg-outline-variant mx-1"></div>
+                    <!-- Notification Area -->
+                    <div class="relative">
+                        <button id="notification-bell" class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2 hover:bg-surface-container-high rounded-full transition-colors relative">
+                            notifications
+                            <span id="unread-dot" class="absolute top-1 right-1 w-2.5 h-2.5 bg-secondary rounded-full border border-surface"></span>
+                        </button>
+                        <!-- Dropdown -->
+                        <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white border border-outline-variant rounded-xl shadow-lg z-50 overflow-hidden">
+                            <div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+                                <h3 class="font-headline-sm text-sm font-bold text-on-surface">Notifications</h3>
+                                <button id="clear-notifications" class="text-label-md text-secondary hover:underline">Clear all</button>
+                            </div>
+                            <div class="divide-y divide-outline-variant max-h-64 overflow-y-auto" id="notification-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- User Circle -->
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+                        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHc7Z1_vmpYbPefLaa2tdiig1Q8s0DFHyYdrVNoQYzyrPAlQmETD-EU0UI-6bSDFG5jD-HKzcmIloLKCB2aq4uCkwmZn77ZUYHV6FEpFkUKe5YED6C-iRCKT1GnyaWzqJs3tcDwyhgnP8AHHhmzyrdjPU-79e4IzZ_TPD2RdIFHQtTki8EAuItHPKLDEBja2rOBJA0zEI17T1bVDnP-hOXG_5Tvbb3C2WCWJLU3UkY_eN0UrJOo0-yv2jAqSj8sCFpmH6qJfQJQ77f">
+                    </div>
+                </div>
+            </header>
+            <!-- VIEWS CONTAINERS -->
+            <main class="flex-1 flex flex-col relative bg-background pb-16">
+                
+                <!-- ==================== A. DASHBOARD PANEL ==================== -->
+                <div id="panel-dashboard" class="view-panel hidden p-margin-page">
+                    <!-- Page Title -->
+                    <div class="mb-stack-lg">
+                        <h2 class="font-headline-lg text-headline-lg text-primary mb-1">Mission Control Dashboard</h2>
+                        <p class="text-on-surface-variant font-body-md">Refinery operations and AI document parser status monitor.</p>
+                    </div>
+                    <!-- Quick Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
+                        <div class="glass-panel p-stack-md rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="font-label-md text-on-surface-variant uppercase mb-1">Extractors Active</p>
+                                <h3 class="font-headline-md text-on-surface font-black" id="dash-active-extractors">4</h3>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-3xl">precision_manufacturing</span>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="font-label-md text-on-surface-variant uppercase mb-1">Queue Backlog</p>
+                                <h3 class="font-headline-md text-on-surface font-black" id="dash-queue-backlog">1</h3>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-3xl">conveyor_belt</span>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="font-label-md text-on-surface-variant uppercase mb-1">Tables Extracted</p>
+                                <h3 class="font-headline-md text-on-surface font-black" id="dash-total-tables">1,284</h3>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-3xl">table_chart</span>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="font-label-md text-on-surface-variant uppercase mb-1">AI Trust Score</p>
+                                <h3 class="font-headline-md text-on-surface font-black" id="dash-trust-score">98.4%</h3>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-3xl">analytics</span>
+                        </div>
+                    </div>
+                    <!-- Main Section: Recent Activity & System Health -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                        
+                        <!-- Left 2 Cols: Recent Activity -->
+                        <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden border border-outline-variant flex flex-col">
+                            <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+                                <h3 class="font-headline-sm text-headline-sm font-bold">Recent Pipeline Activities</h3>
+                                <button onclick="window.switchPanel('upload')" class="text-label-md text-secondary hover:underline">View Pipeline</button>
+                            </div>
+                            <div class="flex-1 overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-surface-container border-b border-outline-variant text-on-surface-variant">
+                                            <th class="px-6 py-3 font-label-md text-label-md uppercase">Source File</th>
+                                            <th class="px-6 py-3 font-label-md text-label-md uppercase">Type</th>
+                                            <th class="px-6 py-3 font-label-md text-label-md uppercase">Status</th>
+                                            <th class="px-6 py-3 font-label-md text-label-md uppercase">Operator</th>
+                                        </tr>
+                                    </table>
+                                    <table class="w-full text-left border-collapse divide-y divide-outline-variant" id="dashboard-activity-rows">
+                                        <!-- Loaded dynamically -->
+                                    </table>
+                                </div>
+                        </div>
+                        <!-- Right 1 Col: AI Capacity Indicator Widget -->
+                        <div class="glass-panel p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-headline-sm text-headline-sm font-bold mb-4">Refinery AI Capacity</h3>
+                                <div class="space-y-6">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-body-sm font-semibold">LLM Tokens / Min</span>
+                                            <span class="text-body-sm text-on-surface-variant font-mono">42%</span>
+                                        </div>
+                                        <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+                                            <div class="bg-secondary h-full" style="width: 42%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-body-sm font-semibold">OCR Thread Loads</span>
+                                            <span class="text-body-sm text-on-surface-variant font-mono">78%</span>
+                                        </div>
+                                        <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+                                            <div class="bg-secondary h-full" style="width: 78%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-body-sm font-semibold">Disk Cache Space</span>
+                                            <span class="text-body-sm text-on-surface-variant font-mono">14%</span>
+                                        </div>
+                                        <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+                                            <div class="bg-secondary h-full" style="width: 14%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-8 border-t border-outline-variant pt-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center text-on-secondary-container shrink-0 pulse-indicator bg-secondary"></div>
+                                    <div>
+                                        <p class="text-xs text-on-surface-variant uppercase tracking-widest font-black">Gatekeeper Agent</p>
+                                        <p class="text-[11px] text-on-surface-variant mt-0.5">Monitoring logs integrity. 0 threat alerts.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==================== B. DOCUMENT UPLOAD PANEL ==================== -->
+                <div id="panel-upload" class="view-panel hidden p-margin-page">
+                    <div class="mb-stack-lg">
+                        <h2 class="font-headline-lg text-headline-lg text-primary mb-1">Upload Pipeline</h2>
+                        <p class="text-on-surface-variant font-body-md">Drag & drop refinery specification records or valve data sheets.</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                        <!-- Left 2 Cols: Drag zone & queue -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Drag area -->
+                            <div id="drop-zone" class="border-2 border-dashed border-outline-variant hover:border-secondary rounded-2xl p-10 bg-white/50 flex flex-col items-center justify-center text-center cursor-pointer transition-all">
+                                <span class="material-symbols-outlined text-6xl text-outline-variant mb-4" id="drop-icon">cloud_upload</span>
+                                <h3 class="font-headline-sm text-headline-sm mb-2">Drag files here to start parsing</h3>
+                                <p class="text-on-surface-variant text-body-sm mb-6 max-w-sm">Supports PDF, CSV, TXT files up to 50MB. Auto-extract tables using refinery-grade precision.</p>
+                                <input type="file" id="file-input" class="hidden" multiple>
+                                <button type="button" onclick="document.getElementById('file-input').click()" class="px-6 py-2.5 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-transform active:scale-95">Browse Local Files</button>
+                            </div>
+                            <!-- Upload Active Queue -->
+                            <div class="glass-panel rounded-xl overflow-hidden border border-outline-variant flex flex-col">
+                                <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+                                    <h3 class="font-headline-sm text-headline-sm font-bold">Extraction Processing Queue</h3>
+                                    <button id="process-queue-btn" class="px-4 py-2 bg-secondary text-white rounded-lg text-body-sm font-semibold hover:opacity-90 transition-transform active:scale-95 hidden">
+                                        Process & Extract Data
+                                    </button>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="bg-surface-container border-b border-outline-variant text-on-surface-variant">
+                                                <th class="px-6 py-3 font-label-md text-label-md uppercase">Document Name</th>
+                                                <th class="px-6 py-3 font-label-md text-label-md uppercase">Size</th>
+                                                <th class="px-6 py-3 font-label-md text-label-md uppercase w-48">Progress</th>
+                                                <th class="px-6 py-3 font-label-md text-label-md uppercase text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="upload-queue-rows" class="divide-y divide-outline-variant">
+                                            <!-- Managed dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right 1 Col: Guidelines & Stats -->
+                        <div class="space-y-6">
+                            <div class="glass-panel p-6 rounded-xl border border-outline-variant">
+                                <h3 class="font-headline-sm text-headline-sm font-bold mb-4">Pipeline Guidelines</h3>
+                                <ul class="space-y-4 text-body-sm text-on-surface-variant">
+                                    <li class="flex gap-2">
+                                        <span class="material-symbols-outlined text-secondary text-sm shrink-0">check_circle</span>
+                                        <span>PDF documents must contain readable tables or clear scanned text grids.</span>
+                                    </li>
+                                    <li class="flex gap-2">
+                                        <span class="material-symbols-outlined text-secondary text-sm shrink-0">check_circle</span>
+                                        <span>CSV files must use comma, tab, or pipe delimiters.</span>
+                                    </li>
+                                    <li class="flex gap-2">
+                                        <span class="material-symbols-outlined text-secondary text-sm shrink-0">check_circle</span>
+                                        <span>OCR post-processing handles handwritten characters with 92% accuracy.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="glass-panel p-6 rounded-xl border border-outline-variant bg-primary-container text-white">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="material-symbols-outlined text-secondary-fixed">shield_lock</span>
+                                    <h4 class="font-bold text-white">Refinery Level Guard</h4>
+                                </div>
+                                <p class="text-xs text-on-primary-container leading-relaxed">
+                                    All files uploaded are locally encrypted via SHA-256 before insertion into the database storage engine.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==================== C. AI TABLE EXTRACTION PANEL ==================== -->
+                <div id="panel-extraction" class="view-panel hidden flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+                    <!-- Split screen container -->
+                    <div class="flex-1 flex overflow-hidden">
+                        
+                        <!-- Left Side: Source documents list selection -->
+                        <div class="w-80 border-r border-outline-variant bg-surface-container-low flex flex-col shrink-0">
+                            <div class="p-stack-md border-b border-outline-variant bg-surface">
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-sm">search</span>
+                                    <input type="text" id="extraction-sidebar-search" placeholder="Search files..." class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-secondary outline-none transition-all">
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-stack-sm space-y-2" id="extraction-document-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                        <!-- Right Side: PDF Preview and Extracted Table -->
+                        <div class="flex-1 flex flex-col bg-surface-container overflow-hidden">
+                            
+                            <!-- PDF Document view area -->
+                            <section class="flex-1 p-6 relative overflow-hidden flex items-center justify-center">
+                                <div class="max-w-4xl w-full h-full bg-white rounded-xl shadow-lg border border-outline-variant relative overflow-hidden flex flex-col">
+                                    
+                                    <!-- PDF Toolbar -->
+                                    <div class="h-12 border-b border-outline-variant bg-surface-container-low flex items-center justify-between px-4">
+                                        <div class="flex items-center gap-4 text-on-surface-variant">
+                                            <button class="hover:text-primary"><span class="material-symbols-outlined">zoom_out</span></button>
+                                            <span class="font-label-md" id="pdf-page-indicator">Page 1 of 4</span>
+                                            <button class="hover:text-primary"><span class="material-symbols-outlined">zoom_in</span></button>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-secondary font-bold text-[10px] uppercase tracking-widest flex items-center gap-1">
+                                                <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                                                AI Engine Active
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- PDF Canvas Area -->
+                                    <div class="flex-1 relative bg-surface-dim/20 p-stack-lg overflow-auto flex justify-center">
+                                        <div class="relative w-[560px] h-[720px] bg-white shadow-sm border border-outline-variant" id="pdf-document-canvas">
+                                            <!-- Blueprint scanner line -->
+                                            <div class="scanning-line" id="scanner-line"></div>
+                                            
+                                            <!-- Highlight overlays -->
+                                            <div class="absolute top-[120px] left-[40px] w-[480px] h-[180px] glass-overlay rounded-lg border-2 border-secondary flex flex-col p-2 animate-pulse">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="bg-secondary text-white text-[9px] font-bold px-1.5 py-0.5 rounded">TABLE_DETECTION_01</span>
+                                                    <span class="text-[10px] font-mono text-secondary font-bold">98.4% Confidence</span>
+                                                </div>
+                                                <div class="flex-1 border border-dashed border-secondary/40 rounded flex items-center justify-center">
+                                                    <span class="text-secondary/60 font-label-md text-[10px] uppercase">Mapping Schema...</span>
+                                                </div>
+                                            </div>
+                                            <div class="absolute top-[380px] left-[40px] w-[480px] h-[120px] glass-overlay rounded-lg border-2 border-secondary/40 flex flex-col p-2">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <span class="bg-secondary/40 text-on-secondary-container text-[9px] font-bold px-1.5 py-0.5 rounded">TABLE_DETECTION_02</span>
+                                                    <span class="text-[10px] font-mono text-secondary/60 font-bold">82.1% Confidence</span>
+                                                </div>
+                                                <div class="flex-1 border border-dashed border-secondary/20 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Floating AI Box -->
+                                <div class="absolute top-10 right-10 bg-primary-container text-white p-4 rounded-xl shadow-2xl border border-white/10 max-w-xs flex flex-col gap-2 z-20">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-secondary">auto_awesome</span>
+                                        <span class="font-bold text-body-sm">AI Extraction Agent</span>
+                                    </div>
+                                    <p class="text-[11px] opacity-80 leading-relaxed" id="extraction-ai-analysis">
+                                        Detecting tabular structures in the selected document. Identifying header rows and mapping units to standard DB layout.
+                                    </p>
+                                </div>
+                            </section>
+                            <!-- Bottom Panel: Extracted Table Preview -->
+                            <footer class="h-64 bg-white border-t border-outline-variant flex flex-col overflow-hidden">
+                                <div class="px-gutter py-2.5 border-b border-outline-variant flex justify-between items-center bg-surface-container-low shrink-0">
+                                    <div class="flex items-center gap-4">
+                                        <h3 class="font-headline-sm text-[16px] font-bold text-on-surface">Extracted Data Preview</h3>
+                                        <div class="flex gap-2">
+                                            <span class="px-2 py-0.5 rounded-lg bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold border border-secondary/20" id="extraction-rows-count">4 Rows</span>
+                                            <span class="px-2 py-0.5 rounded-lg bg-red-100 text-red-800 text-[10px] font-bold border border-error/20" id="extraction-flags-count">1 Flag</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <button id="extraction-validate-btn" class="px-4 py-1.5 border border-outline-variant rounded-lg text-body-sm font-semibold hover:bg-surface-container-high transition-colors">Verify Rows</button>
+                                        <button id="extraction-convert-btn" class="px-4 py-1.5 bg-primary text-white rounded-lg text-body-sm font-semibold flex items-center gap-2 hover:opacity-90 transition-all">
+                                            <span class="material-symbols-outlined text-[16px]">table_view</span>
+                                            Convert to Excel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex-1 overflow-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead class="sticky top-0 bg-surface-container-high text-on-surface-variant z-10">
+                                            <tr>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant">Ref ID</th>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant">Description</th>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant text-right">Quantity</th>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant text-right">Unit Price</th>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant text-right">Total</th>
+                                                <th class="px-6 py-2.5 font-label-md text-label-md uppercase border-b border-outline-variant">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-outline-variant" id="extraction-preview-rows">
+                                            <!-- Dynamic rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==================== D. AI CHATBOT PANEL ==================== -->
+                <div id="panel-chatbot" class="view-panel hidden flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+                    <div class="flex-1 flex overflow-hidden">
+                        
+                        <!-- Left Side: Source files context -->
+                        <div class="w-80 border-r border-outline-variant bg-surface-container-low flex flex-col shrink-0">
+                            <div class="p-4 border-b border-outline-variant bg-surface">
+                                <h3 class="font-headline-sm text-headline-sm font-bold mb-1">Knowledge Context</h3>
+                                <p class="text-xs text-on-surface-variant">Select documents to query using LLM context.</p>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-4 space-y-3" id="chatbot-context-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                        <!-- Right Side: Main Chat Interface -->
+                        <div class="flex-1 flex flex-col bg-white overflow-hidden">
+                            <!-- Messages Area -->
+                            <div class="flex-1 p-6 overflow-y-auto space-y-4" id="chat-messages-container">
+                                <!-- Greeting message -->
+                                <div class="flex gap-4 items-start max-w-3xl">
+                                    <div class="w-8 h-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary shrink-0">
+                                        <span class="material-symbols-outlined text-sm">smart_toy</span>
+                                    </div>
+                                    <div class="bg-surface-container-low p-4 rounded-xl ai-chat-bubble text-body-sm text-on-surface">
+                                        <p class="font-semibold text-secondary mb-1">RTP AI Assistant</p>
+                                        <p>Operator sessions initiated. Ask questions about refinery specifications, pressure logs, valve data sheets, or Q3 reports.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Suggested Prompts / Chips -->
+                            <div class="px-6 py-2 border-t border-outline-variant bg-surface-container-low flex gap-2 overflow-x-auto shrink-0" id="suggested-queries-chips">
+                                <button class="suggested-chip px-3 py-1.5 bg-white border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary shrink-0 transition-colors">
+                                    Summarize inventory logs
+                                </button>
+                                <button class="suggested-chip px-3 py-1.5 bg-white border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary shrink-0 transition-colors">
+                                    Check pressure abnormalities
+                                </button>
+                                <button class="suggested-chip px-3 py-1.5 bg-white border border-outline-variant rounded-full text-xs font-semibold hover:border-secondary hover:text-secondary shrink-0 transition-colors">
+                                    Compare valves in Q2 vs Q3
+                                </button>
+                            </div>
+                            <!-- Text Input Box -->
+                            <div class="p-4 border-t border-outline-variant bg-surface flex gap-3 shrink-0">
+                                <textarea id="chat-input" rows="1" placeholder="Type instructions or questions (e.g. Find specifications for Valve-772-A)..." 
+                                    class="flex-1 p-3 bg-white border border-outline-variant rounded-xl text-body-sm focus:ring-2 focus:ring-secondary outline-none resize-none transition-all"></textarea>
+                                <button id="chat-send-btn" class="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-transform active:scale-95">
+                                    <span class="material-symbols-outlined">send</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==================== E. EXCEL MANAGER PANEL ==================== -->
+                <div id="panel-excel" class="view-panel hidden p-margin-page">
+                    <div class="flex justify-between items-end mb-stack-lg">
+                        <div>
+                            <h2 class="font-headline-lg text-headline-lg text-primary mb-1">Excel Output Manager</h2>
+                            <p class="text-on-surface-variant font-body-md max-w-2xl">Manage and audit your AI-generated extraction reports.</p>
+                        </div>
+                        <div class="flex gap-stack-md">
+                            <button id="excel-bulk-download-btn" class="flex items-center gap-2 px-4 py-2 bg-surface-container-high border border-outline-variant rounded-lg font-label-md text-label-md hover:bg-surface-container-highest transition-all">
+                                <span class="material-symbols-outlined text-body-sm">download_for_offline</span>
+                                Download Selected
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Stats Bento Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
+                        <div class="glass-panel p-stack-md rounded-xl">
+                            <p class="font-label-md text-on-surface-variant uppercase mb-1">Total Reports</p>
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-headline-md text-on-surface font-black" id="excel-total-reports">3</span>
+                            </div>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl">
+                            <p class="font-label-md text-on-surface-variant uppercase mb-1">Spreadsheet Size</p>
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-headline-md text-on-surface font-black" id="excel-total-size">4.4 MB</span>
+                            </div>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl">
+                            <p class="font-label-md text-on-surface-variant uppercase mb-1">OCR Precision Avg.</p>
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-headline-md text-on-surface font-black">98.4%</span>
+                                <div class="w-12 h-1 bg-secondary-container rounded-full overflow-hidden shrink-0">
+                                    <div class="w-11/12 h-full bg-secondary"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel p-stack-md rounded-xl">
+                            <p class="font-label-md text-on-surface-variant uppercase mb-1">Compliance Shield</p>
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-xl">verified_user</span>
+                                <span class="font-bold text-sm text-on-surface">AES-256</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Spreadsheets Table -->
+                    <div class="glass-panel rounded-xl overflow-hidden border border-outline-variant" id="excel-table-container">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-surface-container-low border-b border-outline-variant text-on-surface-variant">
+                                <tr>
+                                    <th class="px-gutter py-4 w-12">
+                                        <input id="excel-select-all" class="rounded border-outline-variant text-secondary focus:ring-secondary cursor-pointer" type="checkbox">
+                                    </th>
+                                    <th class="px-gutter py-4 font-label-md text-label-md uppercase tracking-wider">Filename</th>
+                                    <th class="px-gutter py-4 font-label-md text-label-md uppercase tracking-wider">Source Document</th>
+                                    <th class="px-gutter py-4 font-label-md text-label-md uppercase tracking-wider">Created Date</th>
+                                    <th class="px-gutter py-4 font-label-md text-label-md uppercase tracking-wider text-right">File Size</th>
+                                    <th class="px-gutter py-4 font-label-md text-label-md uppercase tracking-wider text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant" id="excel-report-rows">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- ==================== F. SETTINGS PANEL ==================== -->
+                <div id="panel-settings" class="view-panel hidden p-margin-page">
+                    <div class="mb-stack-lg">
+                        <h2 class="font-headline-lg text-headline-lg text-primary mb-1">Admin &amp; Security Settings</h2>
+                        <p class="text-on-surface-variant font-body-md flex items-center gap-2">
+                            <span class="material-symbols-outlined text-secondary text-[18px]">verified_user</span>
+                            Managed Gateway: RTP Core Precision Environment v4.2
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-12 gap-gutter">
+                        
+                        <!-- Left Category Buttons -->
+                        <div class="col-span-12 md:col-span-3 flex flex-col gap-2">
+                            <button id="settings-tab-btn-operators" onclick="switchSettingsTab('operators')" 
+                                class="settings-tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white flex justify-between items-center transition-all hover:border-secondary">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-on-surface-variant">group</span>
+                                    <span class="font-bold text-sm">User Management</span>
+                                </div>
+                                <span class="material-symbols-outlined text-outline-variant text-[18px]">chevron_right</span>
+                            </button>
+                            <button id="settings-tab-btn-permissions" onclick="switchSettingsTab('permissions')" 
+                                class="settings-tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 flex justify-between items-center transition-all hover:border-secondary">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-on-surface-variant">rule</span>
+                                    <span class="font-bold text-sm">Access Control</span>
+                                </div>
+                                <span class="material-symbols-outlined text-outline-variant text-[18px]">chevron_right</span>
+                            </button>
+                            <button id="settings-tab-btn-security" onclick="switchSettingsTab('security')" 
+                                class="settings-tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 flex justify-between items-center transition-all hover:border-secondary">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-on-surface-variant">lock_open</span>
+                                    <span class="font-bold text-sm">Security Gateway</span>
+                                </div>
+                                <span class="material-symbols-outlined text-outline-variant text-[18px]">chevron_right</span>
+                            </button>
+                            <button id="settings-tab-btn-logs" onclick="switchSettingsTab('logs')" 
+                                class="settings-tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 flex justify-between items-center transition-all hover:border-secondary">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-on-surface-variant">history_edu</span>
+                                    <span class="font-bold text-sm">Activity Audit Logs</span>
+                                </div>
+                                <span class="material-symbols-outlined text-outline-variant text-[18px]">chevron_right</span>
+                            </button>
+                        </div>
+                        <!-- Right Settings content panel -->
+                        <div class="col-span-12 md:col-span-9 bg-white border border-outline-variant rounded-2xl shadow-sm overflow-hidden p-6">
+                            
+                            <!-- SubTab 1: Operators -->
+                            <div id="settings-sub-operators" class="settings-sub-panel space-y-6">
+                                <div class="flex justify-between items-center pb-4 border-b border-outline-variant">
+                                    <div>
+                                        <h3 class="font-headline-sm text-headline-sm font-bold">Active Operators</h3>
+                                        <p class="text-body-sm text-on-surface-variant">Manage team credentials and refinery dashboard authorizations.</p>
+                                    </div>
+                                    <button id="add-user-btn" class="bg-primary text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors">
+                                        <span class="material-symbols-outlined">person_add</span>
+                                        Add Operator
+                                    </button>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left">
+                                        <thead>
+                                            <tr class="bg-surface-container border-b border-outline-variant text-on-surface-variant">
+                                                <th class="px-4 py-3 font-label-md text-label-md uppercase">Operator</th>
+                                                <th class="px-4 py-3 font-label-md text-label-md uppercase">Role</th>
+                                                <th class="px-4 py-3 font-label-md text-label-md uppercase">Status</th>
+                                                <th class="px-4 py-3 font-label-md text-label-md uppercase">Last Login</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-outline-variant" id="settings-operators-list">
+                                            <!-- Dynamic operators -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- SubTab 2: Permissions -->
+                            <div id="settings-sub-permissions" class="settings-sub-panel hidden space-y-6">
+                                <div class="pb-4 border-b border-outline-variant">
+                                    <h3 class="font-headline-sm text-headline-sm font-bold">Module Permissions</h3>
+                                    <p class="text-body-sm text-on-surface-variant">Configure system module availability and gatekeeper guidelines.</p>
+                                </div>
+                                <div class="space-y-6" id="settings-permissions-list">
+                                    <!-- Dynamic switch items -->
+                                </div>
+                            </div>
+                            <!-- SubTab 3: Security & Encryption -->
+                            <div id="settings-sub-security" class="settings-sub-panel hidden space-y-6">
+                                <div class="pb-4 border-b border-outline-variant">
+                                    <h3 class="font-headline-sm text-headline-sm font-bold">Security Gateway</h3>
+                                    <p class="text-body-sm text-on-surface-variant">Manage rotational API tokens, session rules, and encryption layers.</p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant flex flex-col justify-between">
+                                        <div>
+                                            <h4 class="font-bold mb-2">AES-256 Storage Rotation</h4>
+                                            <p class="text-xs text-on-surface-variant leading-relaxed">Ensure dynamic keys are rotated regularly to comply with refinery compliance guidelines.</p>
+                                        </div>
+                                        <div class="mt-4">
+                                            <button id="rotate-key-btn" class="w-full px-4 py-2 bg-primary text-white rounded-lg font-bold text-body-sm hover:opacity-90 transition-transform active:scale-95">Rotate Session Key</button>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-surface-container border border-outline-variant flex flex-col justify-between">
+                                        <div>
+                                            <h4 class="font-bold mb-2">Refinery API Gateway Key</h4>
+                                            <div class="flex items-center gap-2 p-2 bg-surface-container-highest rounded text-code-sm font-mono truncate select-all" id="api-key-text">
+                                                rtp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx9A4
+                                            </div>
+                                        </div>
+                                        <p class="text-[11px] text-on-surface-variant italic mt-4" id="api-key-updated">Last rotated: Sept 12, 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SubTab 4: Audit Activity Logs -->
+                            <div id="settings-sub-logs" class="settings-sub-panel hidden space-y-6">
+                                <div class="pb-4 border-b border-outline-variant">
+                                    <h3 class="font-headline-sm text-headline-sm font-bold">Activity Audit Trail</h3>
+                                    <p class="text-body-sm text-on-surface-variant">Real-time gateway logs, authentication attempts, and dashboard interactions.</p>
+                                </div>
+                                <div class="divide-y divide-outline-variant max-h-[400px] overflow-y-auto" id="settings-audit-logs-list">
+                                    <!-- Dynamic logs -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- GLOBAL FOOTER -->
+            <footer class="fixed bottom-0 right-0 w-[calc(100%-280px)] bg-surface-container-low border-t border-outline-variant flex flex-col md:flex-row justify-between items-center py-stack-md px-margin-page z-30">
+                <p class="font-body-sm text-body-sm text-on-surface-variant">© 2026 RTP Automation AI. Refinery Grade Security &amp; Precision.</p>
+                <div class="flex gap-6">
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">Compliance Protocol</a>
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">API Documentation</a>
+                    <a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface underline transition-opacity" href="#">Support</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- Modals (Operator Add Modal) -->
+    <div id="add-user-modal" class="hidden fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-outline-variant">
+            <h3 class="font-headline-sm text-headline-sm font-bold mb-4">Add System Operator</h3>
+            <form id="add-user-form" class="space-y-4">
+                <div>
+                    <label for="new-user-name" class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Full Name</label>
+                    <input type="text" id="new-user-name" required placeholder="Robert Tiller" class="w-full p-2.5 border border-outline-variant rounded-lg">
+                </div>
+                <div>
+                    <label for="new-user-email" class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Email Address</label>
+                    <input type="email" id="new-user-email" required placeholder="tiller.r@rtp-refinery.ai" class="w-full p-2.5 border border-outline-variant rounded-lg">
+                </div>
+                <div>
+                    <label for="new-user-role" class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Access Role</label>
+                    <select id="new-user-role" class="w-full p-2.5 border border-outline-variant rounded-lg">
+                        <option value="Operator">Operator</option>
+                        <option value="Analyst">Analyst</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant">
+                    <button type="button" id="close-user-modal-btn" class="px-4 py-2 border border-outline-variant rounded-lg text-body-sm hover:bg-surface-container-high">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-body-sm font-bold hover:opacity-90">Register Operator</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Application Script -->
+    <script src="/static/main.js"></script>
+</body>
+</html>

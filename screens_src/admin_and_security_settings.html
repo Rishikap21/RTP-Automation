@@ -1,0 +1,643 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin &amp; Security Settings | RTP Automation</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#dae2fd",
+                    "surface-container": "#eceef0",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f2f4f6",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#40c2fd",
+                    "tertiary-fixed": "#d3e4fe",
+                    "secondary": "#00668a",
+                    "tertiary-container": "#0b1c30",
+                    "on-tertiary-container": "#75859d",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-container-highest": "#e0e3e5",
+                    "secondary-fixed-dim": "#7bd0ff",
+                    "secondary-fixed": "#c4e7ff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary-fixed": "#001e2c",
+                    "on-tertiary-fixed-variant": "#38485d",
+                    "surface": "#f7f9fb",
+                    "tertiary-fixed-dim": "#b7c8e1",
+                    "on-secondary-container": "#004d6a",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "outline-variant": "#c6c6cd",
+                    "surface-bright": "#f7f9fb",
+                    "inverse-primary": "#bec6e0",
+                    "on-surface": "#191c1e",
+                    "on-tertiary-fixed": "#0b1c30",
+                    "surface-container-high": "#e6e8ea",
+                    "on-primary-fixed": "#131b2e",
+                    "primary-fixed-dim": "#bec6e0",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#d8dadc",
+                    "primary-container": "#131b2e",
+                    "primary": "#000000",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-variant": "#e0e3e5",
+                    "surface-tint": "#565e74",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#76777d",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#45464d",
+                    "tertiary": "#000000",
+                    "on-secondary-fixed-variant": "#004c69",
+                    "background": "#f7f9fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-lg": "32px",
+                    "stack-md": "16px",
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "stack-sm": "8px",
+                    "margin-page": "40px",
+                    "container-max": "1440px",
+                    "stack-xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "headline-md": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Geist"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code-sm": ["JetBrains Mono"],
+                    "headline-lg": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F1F5F9;
+            color: #191c1e;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid #E2E8F0;
+        }
+        .active-tab-glow {
+            box-shadow: 0 0 15px -3px rgba(64, 194, 253, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface border-r border-outline-variant flex flex-col py-stack-lg px-stack-md z-[60]">
+<div class="mb-stack-lg px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">shield_lock</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">RTP Automation</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest opacity-60">Mission Control</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Nav Items from JSON -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">conveyor_belt</span>
+<span class="">Processing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="">Excel Manager</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="">Security</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold active-tab-glow" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="">Help</span>
+</a>
+</nav>
+<div class="mt-auto pt-stack-md border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="">User Profile</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] h-16 bg-surface/80 backdrop-blur-md z-50 border-b border-outline-variant flex justify-between items-center px-gutter">
+<div class="flex items-center gap-8">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm focus:ring-2 focus:ring-secondary-container focus:outline-none w-64 transition-all" placeholder="Global system search..." type="text">
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">AI Monitor</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Queue</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 bg-outline-variant/20 px-4 py-2 rounded-lg text-on-surface font-label-md text-label-md hover:bg-outline-variant/30 transition-colors">
+<span class="material-symbols-outlined text-[18px]">health_and_safety</span>
+                System Health
+            </button>
+<button class="bg-primary text-white px-5 py-2 rounded-lg font-label-md text-label-md font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                New Upload
+            </button>
+<div class="flex items-center gap-2 ml-4">
+<div class="relative group/notifications">
+  <button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden')">notifications</button>
+  <div class="hidden absolute right-0 mt-2 w-80 bg-white border border-outline-variant rounded-xl shadow-lg z-[70] overflow-hidden">
+    <div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+      <span class="font-headline-sm text-[16px] font-bold">Notifications</span>
+      <button class="text-secondary font-label-md text-label-md hover:underline">Mark all as read</button>
+    </div>
+    <div class="divide-y divide-outline-variant">
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <p class="text-body-sm font-medium text-on-surface">Refinery_Report_Q3.pdf processing complete</p>
+        <p class="text-xs text-on-surface-variant mt-1">10 mins ago</p>
+      </div>
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <p class="text-body-sm font-medium text-on-surface">New operator added: Robert Tiller</p>
+        <p class="text-xs text-on-surface-variant mt-1">2 hours ago</p>
+      </div>
+      <div class="p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+        <p class="text-body-sm font-medium text-on-surface">System Health: Optimal</p>
+        <p class="text-xs text-on-surface-variant mt-1">4 hours ago</p>
+      </div>
+    </div>
+    <div class="p-3 bg-surface-container-low border-t border-outline-variant text-center">
+      <button class="text-secondary font-bold text-body-sm hover:underline">View all notifications</button>
+    </div>
+  </div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full transition-colors">shield_person</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img class="w-full h-full object-cover" data-alt="Close up professional portrait of a lead systems engineer for an industrial refinery automation company, wearing professional business casual attire in a modern glass office environment with cool blue and grey lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvRi9Fj32a7ettTXCn_VBA1W659gdqhlCFmIm8hRcCUKXDEv768TrZmNHwGtSZyW8yVCaR3C3VbgwOcR_QO7mzpRi66s-RG1mgfGQtZslRwKyfBF-pLS0MUCyZExcS8y46_NYoAF185T7FHnu1yps5h8jyB9b51AJ2T92JC_y2-K8dfSY_U-Y7oq_GQtS9H7XUCYyKNAzfZxP40cZGGE6JKTzB6lW_mPf6v6kz7KI2e2g45ltdYvG0C_8z_Ja4WeIOj19z-MZfow-p">
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] pt-16 flex-1 flex flex-col p-margin-page bg-background">
+<!-- Header Section -->
+<section class="mb-stack-lg flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-1">Admin &amp; Security</h2>
+<p class="text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">verified_user</span>
+                    Managed Gateway: RTP Core Precision Environment v4.2
+                </p>
+</div>
+<div class="flex gap-3">
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-3 border-secondary/30">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label-md text-label-md text-secondary font-bold">REFINERY GRADE SECURITY ACTIVE</span>
+</div>
+</div>
+</section>
+<!-- Sub-Navigation (Bento Style Layout) -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Category Navigation (Left) -->
+<div class="col-span-3 flex flex-col gap-2">
+<button class="tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant shadow-sm flex justify-between items-center transition-all hover:border-secondary group active border-secondary bg-white" id="btn-user-management" onclick="switchTab('user-management')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">group</span>
+<span class="font-bold">User Management</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-[.active]:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 shadow-sm flex justify-between items-center transition-all hover:border-secondary group" id="btn-access-control" onclick="switchTab('access-control')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">rule</span>
+<span class="font-bold">Access Control</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-[.active]:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 shadow-sm flex justify-between items-center transition-all hover:border-secondary group" id="btn-security-settings" onclick="switchTab('security-settings')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">lock_open</span>
+<span class="font-bold">Security Settings</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-[.active]:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="tab-btn text-left px-5 py-4 rounded-xl border border-outline-variant bg-white/50 shadow-sm flex justify-between items-center transition-all hover:border-secondary group" id="btn-activity-logs" onclick="switchTab('activity-logs')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">history_edu</span>
+<span class="font-bold">Activity Logs</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-[.active]:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<!-- Security Badge Card -->
+<div class="mt-auto p-5 rounded-2xl bg-primary-container text-white relative overflow-hidden">
+
+<div class="relative z-10">
+<span class="material-symbols-outlined text-secondary-fixed mb-2">description</span>
+<h4 class="font-bold text-white mb-1">AES-256 Compliant</h4>
+<p class="text-on-primary-container text-body-sm">All session data is encrypted at rest and in transit.</p>
+<button class="mt-4 text-secondary-fixed font-label-md text-label-md flex items-center gap-1 hover:underline">
+                            View Compliance Report <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Content Area (Right) -->
+<div class="col-span-9">
+<!-- 1. User Management Panel -->
+<div class="tab-content transition-all duration-300" id="user-management">
+<div class="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+<div class="px-gutter py-stack-md border-b border-outline-variant flex justify-between items-center">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Active Operators</h3>
+<p class="text-body-sm text-on-surface-variant">Manage team access and roles.</p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">person_add</span>
+                                Add User
+                            </button>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-gutter py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Operator</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Role</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Last Login</th>
+<th class="px-gutter py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-gutter py-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold">JD</div>
+<div>
+<p class="font-bold">John Doe</p>
+<p class="text-body-sm text-on-surface-variant">john.d@rtp-refinery.ai</p>
+</div>
+</td>
+<td class="px-4 py-5">
+<span class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md">Admin</span>
+</td>
+<td class="px-4 py-5">
+<div class="flex items-center gap-2 text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                            Active
+                                        </div>
+</td>
+<td class="px-4 py-5 text-on-surface-variant text-body-sm">2 mins ago</td>
+<td class="px-gutter py-5 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-gutter py-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold">SM</div>
+<div>
+<p class="font-bold">Sarah Miller</p>
+<p class="text-body-sm text-on-surface-variant">s.miller@rtp-refinery.ai</p>
+</div>
+</td>
+<td class="px-4 py-5">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md">Analyst</span>
+</td>
+<td class="px-4 py-5">
+<div class="flex items-center gap-2 text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                            Active
+                                        </div>
+</td>
+<td class="px-4 py-5 text-on-surface-variant text-body-sm">4 hours ago</td>
+<td class="px-gutter py-5 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-gutter py-5 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold">RT</div>
+<div>
+<p class="font-bold">Robert Tiller</p>
+<p class="text-body-sm text-on-surface-variant">tiller.r@rtp-refinery.ai</p>
+</div>
+</td>
+<td class="px-4 py-5">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md">Operator</span>
+</td>
+<td class="px-4 py-5">
+<div class="flex items-center gap-2 text-outline">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+                                            Offline
+                                        </div>
+</td>
+<td class="px-4 py-5 text-on-surface-variant text-body-sm">2 days ago</td>
+<td class="px-gutter py-5 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-gutter border-t border-outline-variant bg-surface-container-low flex justify-center">
+<button class="text-secondary font-bold hover:underline">View All 42 Operators</button>
+</div>
+</div>
+</div>
+<!-- 2. Access Control Panel -->
+<div class="tab-content hidden transition-all duration-300" id="access-control">
+<div class="bg-white border border-outline-variant rounded-2xl p-gutter shadow-sm">
+<div class="mb-stack-lg">
+<h3 class="font-headline-sm text-headline-sm">Module Permissions</h3>
+<p class="text-body-sm text-on-surface-variant">Configure granular access for core system components.</p>
+</div>
+<div class="space-y-6">
+<!-- Module 1 -->
+<div class="flex items-start justify-between p-4 rounded-xl border border-outline-variant bg-surface/30">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div>
+<h4 class="font-bold">Refinery Chatbot AI</h4>
+<p class="text-body-sm text-on-surface-variant">Allow operators to query refinery manuals via LLM.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<!-- Module 2 -->
+<div class="flex items-start justify-between p-4 rounded-xl border border-outline-variant bg-surface/30">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">document_scanner</span>
+</div>
+<div>
+<h4 class="font-bold">Data Auto-Extraction</h4>
+<p class="text-body-sm text-on-surface-variant">High-precision parsing of legacy valve data logs.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<!-- Module 3 -->
+<div class="flex items-start justify-between p-4 rounded-xl border border-outline-variant bg-surface/30">
+<div class="flex gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">table_chart</span>
+</div>
+<div>
+<h4 class="font-bold">Excel Manager Core</h4>
+<p class="text-body-sm text-on-surface-variant">Read/Write operations for plant performance spreadsheets.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox">
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+<div class="mt-8 flex justify-end gap-3">
+<button class="px-6 py-2 border border-outline-variant rounded-lg font-bold hover:bg-surface-container-low transition-colors">Reset Changes</button>
+<button class="px-6 py-2 bg-primary text-white rounded-lg font-bold hover:bg-slate-800 transition-colors">Save Permissions</button>
+</div>
+</div>
+</div>
+<!-- 3. Security Settings Panel -->
+<div class="tab-content hidden transition-all duration-300" id="security-settings">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Encryption Card -->
+<div class="bg-white border border-outline-variant rounded-2xl p-gutter shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary">vpn_lock</span>
+<h3 class="font-bold">Data Privacy</h3>
+</div>
+<div class="space-y-4">
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="font-bold text-body-sm">End-to-End Encryption</span>
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary text-[10px] font-black uppercase">Active</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">RSA-4096 rotational keys enabled for all field communications.</p>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant uppercase mb-2">Persistent Session Timeout</label>
+<select class="w-full bg-white border border-outline-variant rounded-lg p-3 text-body-md focus:ring-secondary-container">
+<option>15 Minutes (High Security)</option>
+<option selected="">30 Minutes (Recommended)</option>
+<option>1 Hour</option>
+<option>Never (Not Recommended)</option>
+</select>
+</div>
+</div>
+</div>
+<!-- API Management -->
+<div class="bg-white border border-outline-variant rounded-2xl p-gutter shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary">key</span>
+<h3 class="font-bold">API Key Manager</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-2 p-3 bg-surface-container-highest rounded font-code-sm text-code-sm text-on-surface truncate">
+                                    rtp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx9A4
+                                    <button class="material-symbols-outlined text-outline ml-auto hover:text-primary">content_copy</button>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 px-4 py-2 bg-primary text-white rounded-lg font-bold text-body-sm">Roll Secret Key</button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-bold text-body-sm">View Docs</button>
+</div>
+<p class="text-xs text-on-surface-variant italic">Last key rotation: Sept 12, 2024</p>
+</div>
+</div>
+</div>
+<!-- AI Confidence Indicator (Glassmorphic) -->
+<div class="mt-gutter p-6 glass-card rounded-2xl flex items-center gap-6 border-l-4 border-l-secondary">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary">analytics</span>
+<span class="font-bold">AI Threat Analysis Engine</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Our automated system has detected 0 anomalies in the last 24 hours across the refinery network.</p>
+</div>
+<div class="text-center">
+<div class="text-display-lg font-display-lg text-secondary leading-none">99.8%</div>
+<div class="text-label-md font-label-md text-on-surface-variant uppercase mt-1">Trust Score</div>
+</div>
+</div>
+</div>
+<!-- 4. Activity Logs Panel -->
+<div class="tab-content hidden transition-all duration-300" id="activity-logs">
+<div class="bg-white border border-outline-variant rounded-2xl shadow-sm">
+<div class="p-gutter border-b border-outline-variant flex gap-4">
+<div class="relative flex-1">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface rounded-lg border border-outline-variant focus:ring-2 focus:ring-secondary-container" placeholder="Search audit trail..." type="text">
+</div>
+<button class="px-4 py-2 border border-outline-variant rounded-lg flex items-center gap-2 font-bold hover:bg-surface-container-low">
+<span class="material-symbols-outlined">filter_list</span>
+                                Filter
+                            </button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg flex items-center gap-2 font-bold hover:bg-surface-container-low">
+<span class="material-symbols-outlined">download</span>
+                                Export
+                            </button>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Log Entry 1 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low/30">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined">settings_suggest</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold">System Configuration Updated</p>
+<span class="text-xs text-outline">12:44 PM</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Operator <span class="text-primary font-medium">John Doe</span> modified Chatbot API thresholds to 0.85.</p>
+<div class="mt-2 flex gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant text-[10px] font-bold">IP: 192.168.1.104</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant text-[10px] font-bold">MAC: F4:DE:22...</span>
+</div>
+</div>
+</div>
+<!-- Log Entry 2 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low/30">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center text-on-error-container shrink-0">
+<span class="material-symbols-outlined">report</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold text-error">Unusual Login Attempt</p>
+<span class="text-xs text-outline">11:02 AM</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Failed login attempt from unauthorized location (Strasbourg, FR). Access denied.</p>
+<button class="mt-2 text-secondary font-bold text-xs hover:underline">Investigate Source</button>
+</div>
+</div>
+<!-- Log Entry 3 -->
+<div class="p-4 flex gap-4 hover:bg-surface-container-low/30">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold">Bulk Data Export</p>
+<span class="text-xs text-outline">09:15 AM</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Sarah Miller exported <span class="font-medium text-primary">Valve_Performance_Q3.xlsx</span> to Local Secure Vault.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="ml-[280px] mt-auto w-[calc(100%-280px)] bg-surface-container-low border-t border-outline-variant py-stack-md px-margin-page flex flex-col md:flex-row justify-between items-center text-body-sm text-on-surface-variant">
+<p class="font-label-md text-label-md font-bold text-on-surface-variant">© 2026 RTP Automation AI. Refinery Grade Security &amp; Precision.</p>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="hover:text-on-surface underline transition-all" href="#">Compliance Protocol</a>
+<a class="hover:text-on-surface underline transition-all" href="#">API Documentation</a>
+<a class="hover:text-on-surface underline transition-all" href="#">Support</a>
+<a class="hover:text-on-surface underline transition-all" href="#">Terms of Service</a>
+</div>
+</footer>
+<script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active classes from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-secondary', 'bg-white');
+                btn.classList.add('bg-white/50');
+            });
+
+            // Show current tab content
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Add active styles to current button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('active', 'border-secondary', 'bg-white');
+            activeBtn.classList.remove('bg-white/50');
+        }
+
+        // Initialize first tab
+        switchTab('user-management');
+
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+
+
+
+
+</body></html>
