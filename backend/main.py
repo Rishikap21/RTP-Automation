@@ -6,6 +6,8 @@ from processing.pdf_processor import extract_text, extract_tables
 from processing.excel_generator import create_excel
 from processing.ocr_processor import extract_text_from_image
 
+from processing.chatbot import ask_chatbot
+
 app = FastAPI(
     title="RTP Automation API",
     version="1.0"
@@ -13,6 +15,8 @@ app = FastAPI(
 
 UPLOAD_FOLDER = "uploads"
 OUTPUT_FOLDER = "output"
+
+document_text = ""
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
@@ -27,6 +31,7 @@ def home():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+    global document_text
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
     with open(file_path, "wb") as buffer:
@@ -41,6 +46,7 @@ async def upload_file(file: UploadFile = File(...)):
     if extension == ".pdf":
 
         extracted_text = extract_text(file_path)
+        document_text = extracted_text  
 
         if extracted_text is None:
             return {
@@ -75,4 +81,18 @@ async def upload_file(file: UploadFile = File(...)):
         "excel_file": excel_path,
         "text": extracted_text,
         "tables": tables
+    }
+
+@app.post("/chat")
+async def chat(request: dict):
+    question = request.get("question")
+
+    if not question:
+        return {"error": "Question is required"}
+
+    answer = ask_chatbot(question,document_text)
+
+    return {
+        "question": question,
+        "answer": answer
     }
