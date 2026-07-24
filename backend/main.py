@@ -22,6 +22,7 @@ from processing.document_understanding import understand_document
 from processing.excel_generator import create_excel
 
 from processing.chatbot import ask_chatbot
+from processing.pdf_processor import extract_text,extract_tables
 
 app = FastAPI(
     title="RTP Automation API",
@@ -89,8 +90,8 @@ async def upload_file(file: UploadFile = File(...)):
         tables = extract_tables(file_path)
 
         excel_path = os.path.join(
-            OUTPUT_FOLDER,
-            file.filename.replace(".pdf", ".xlsx")
+            GENERATED_FOLDER,
+            file.filename.replace(".pdf", ".xlsx"))
     if extension not in supported:
         raise HTTPException(
             status_code=400,
@@ -135,13 +136,12 @@ async def upload_file(file: UploadFile = File(...)):
             "metadata": document["metadata"]
         }
 
-    return {
-        "message": "File processed successfully",
-        "filename": file.filename,
-        "excel_file": excel_path,
-        "text": extracted_text,
-        "tables": tables
-    }
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+    )
 
 @app.post("/chat")
 async def chat(request: dict):
@@ -156,12 +156,7 @@ async def chat(request: dict):
         "question": question,
         "answer": answer
     }
-    except Exception as e:
-
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
-        )
+    
 
 
 @app.get("/download-report/{report_name}")
