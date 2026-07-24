@@ -1,49 +1,105 @@
-
-
 import pdfplumber
 import camelot
-import tabula
+import pandas as pd
 
 
-def extract_text(pdf_path):
+def extract_text(file_path):
+
     text = ""
 
-    try:
-        with pdfplumber.open(pdf_path) as pdf:
-            for page in pdf.pages:
-                page_text = page.extract_text()
-                if page_text:
-                    text += page_text + "\n"
+    with pdfplumber.open(file_path) as pdf:
 
-    except Exception:
-        return None
+        for page in pdf.pages:
+
+            page_text = page.extract_text()
+
+            if page_text:
+                text += page_text + "\n"
 
     return text
 
 
-def extract_tables(pdf_path):
-    extracted_tables = []
+def extract_tables(file_path):
 
-    # Try extracting tables using Camelot
+    raw_tables = []
+
+    # -------------------------------
+    # 1. Camelot Lattice
+    # -------------------------------
     try:
-        tables = camelot.read_pdf(pdf_path, pages="all")
 
-        if len(tables) > 0:
-            for table in tables:
-                extracted_tables.append(table.df.values.tolist())
+        tables = camelot.read_pdf(
+            file_path,
+            pages="all",
+            flavor="lattice"
+        )
 
-    except Exception:
-        pass
+        for table in tables:
 
-    # If Camelot didn't find any tables, use Tabula
-    if len(extracted_tables) == 0:
+            df = table.df
+
+            if not df.empty:
+
+                raw_tables.append(df.values.tolist())
+
+    except Exception as e:
+
+        print("Lattice Error:", e)
+
+    # -------------------------------
+    # 2. Camelot Stream
+    # -------------------------------
+    if len(raw_tables) == 0:
+
         try:
-            tables = tabula.read_pdf(pdf_path, pages="all", multiple_tables=True)
+
+            tables = camelot.read_pdf(
+                file_path,
+                pages="all",
+                flavor="stream"
+            )
 
             for table in tables:
-                extracted_tables.append(table.values.tolist())
 
-        except Exception:
-            pass
+                df = table.df
 
-    return extracted_tables
+                if not df.empty:
+
+                    raw_tables.append(df.values.tolist())
+
+        except Exception as e:
+
+            print("Stream Error:", e)
+
+    # -------------------------------
+    # 3. pdfplumber Fallback
+    # -------------------------------
+    if len(raw_tables) == 0:
+
+        try:
+
+            with pdfplumber.open(file_path) as pdf:
+
+                for page in pdf.pages:
+
+                    tables = page.extract_tables()
+
+                    for table in tables:
+
+                        if table:
+
+                            raw_tables.append(table)
+
+        except Exception as e:
+
+            print("pdfplumber Error:", e)
+
+    return raw_tables
+
+
+def process_pdf(file_path):
+
+    return {
+        "text": extract_text(file_path),
+        "tables": extract_tables(file_path)
+    }

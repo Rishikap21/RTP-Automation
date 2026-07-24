@@ -11,6 +11,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from processing.document_understanding import understand_document
+from processing.excel_generator import create_excel
+
 app = FastAPI(title="RTP Automation AI API Gateway", version="4.2.0")
 
 # Setup CORS for development flexibility
@@ -32,6 +35,16 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # Templates Config
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+# Real file storage
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
+GENERATED_DIR = os.path.join(BASE_DIR, "generated")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(GENERATED_DIR, exist_ok=True)
+
+# Holds the REAL extraction results (metadata + dataframes + sheet_names)
+# keyed by file_id, produced by processing/document_understanding.py
+documents_store = {}
 
 # ==================== IN-MEMORY MOCK STATEFUL DATABASES ====================
 
@@ -185,25 +198,38 @@ async def post_login(req: LoginRequest):
 @app.post("/api/upload")
 async def upload_document(file: UploadFile = File(...)):
     file_id = f"doc_{uuid.uuid4().hex[:6]}"
-    file_size = 1204850 + random.randint(10000, 1000000) # Mock size
-    
-    # Mock parsing of text grid to extracted rows
+
+    extension = os.path.splitext(file.filename)[1]
+    saved_path = os.path.join(UPLOAD_DIR, f"{file_id}{extension}")
+
+    contents = await file.read()
+    with open(saved_path, "wb") as f:
+        f.write(contents)
+
+    # Run the REAL extraction pipeline (pdf/excel/ocr -> dataframes -> metadata)
+    try:
+        result = understand_document(saved_path, extension)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Extraction failed: {e}")
+
+    documents_store[file_id] = {
+        "filename": file.filename,
+        "file_path": saved_path,
+        "metadata": result["metadata"],
+        "dataframes": result["dataframes"],
+        "sheet_names": result["sheet_names"],
+    }
+
     new_doc = {
         "id": file_id,
         "name": file.filename,
-        "size": file_size,
-        "progress": 0,
-        "status": "Queued",
-        "tables_found": 0,
+        "size": len(contents),
+        "progress": 100,
+        "status": "Completed",
+        "tables_found": len(result["dataframes"]),
         "operator": "operator",
-        "extracted_rows": [
-            {"ref_id": "VALVE-124-T", "description": "Direct Action Control Valve Q-type", "quantity": 4, "unit_price": 750.00, "total": 3000.00, "status": "Verified"},
-            {"ref_id": "JOINT-X90", "description": "High Pressure Titanium Elbow Connector Joint", "quantity": 25, "unit_price": 85.50, "total": 2137.50, "status": "Verified"},
-            {"ref_id": "PUMP-992-K", "description": "Rotary Fuel Injection Impeller Pump", "quantity": 1, "unit_price": 14200.00, "total": 14200.00, "status": "Verified"},
-            {"ref_id": "GAUGE-AMB", "description": "OCR Ambiguity: Pressure Telemetry Gauge", "quantity": 10, "unit_price": 190.00, "total": 1900.00, "status": "Flagged"}
-        ]
     }
-    
+
     queue_db.append(new_doc)
     
     audit_logs_db.insert(0, {
@@ -215,7 +241,7 @@ async def upload_document(file: UploadFile = File(...)):
         "ip": "127.0.0.1"
     })
     
-    return {"status": "success", "file_id": file_id}
+    return {"status": "success", "file_id": file_id, "tables_found": len(result["dataframes"])}
 
 # 3. Get Pipeline Queue
 @app.get("/api/queue")
@@ -264,19 +290,24 @@ async def get_extraction(file_id: str):
 # 6. Convert Table to Excel Spreadsheet
 @app.post("/api/excel/convert")
 async def post_convert(req: ConvertRequest):
-    doc = next((d for d in queue_db if d["id"] == req.file_id), None)
+    doc = documents_store.get(req.file_id)
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
-        
+
     report_id = f"rep_{uuid.uuid4().hex[:6]}"
-    report_name = f"{doc['name'].split('.')[0]}_Report.xlsx"
-    
+    report_name = f"{doc['filename'].rsplit('.', 1)[0]}_Report.xlsx"
+    output_path = os.path.join(GENERATED_DIR, f"{report_id}.xlsx")
+
+    # Build the REAL workbook from the extracted dataframes + metadata
+    create_excel([doc], output_path)
+
     new_report = {
         "id": report_id,
         "name": report_name,
-        "source_file": doc["name"],
+        "source_file": doc["filename"],
         "created_at": datetime.now().strftime("%b %d, %Y %H:%M"),
-        "size": doc["size"]
+        "size": os.path.getsize(output_path),
+        "file_path": output_path,
     }
     
     reports_db.append(new_report)
@@ -297,25 +328,18 @@ async def post_convert(req: ConvertRequest):
 async def get_reports():
     return reports_db
 
-# 8. Download spreadsheet report (streams mock file)
+# 8. Download spreadsheet report (streams the real generated file)
 @app.get("/api/reports/download/{report_id}")
 async def get_download_report(report_id: str):
     report = next((r for r in reports_db if r["id"] == report_id), None)
     if not report:
         raise HTTPException(status_code=404, detail="Spreadsheet report file not found")
-    
-    # We will create a small mock .xlsx file inside scratch or temp workspace to send
-    temp_file = os.path.join(BASE_DIR, "static", "mock_report.xlsx")
-    
-    # Create static directory if missing
-    os.makedirs(os.path.dirname(temp_file), exist_ok=True)
-    
-    # Write some placeholder content to act as the spreadsheet download
-    if not os.path.exists(temp_file):
-        with open(temp_file, "w") as f:
-            f.write("RTP Automation Refinery Specification Report spreadsheet data details.")
-            
-    return FileResponse(temp_file, filename=report["name"], media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    file_path = report.get("file_path")
+    if not file_path or not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Generated report file is missing on disk")
+
+    return FileResponse(file_path, filename=report["name"], media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 # 9. AI Chatbot queries Contextual response
 @app.post("/api/chatbot")

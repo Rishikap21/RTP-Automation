@@ -1,9 +1,21 @@
+# Virtual Environment
 venv/
+
+# Python cache
 __pycache__/
 *.pyc
 
-uploads/
-output/
+# Generated files
+generated/
 
-.env
+# Uploaded files
+uploads/
+
+# Poppler
+poppler-26.02.0/
+
+# VS Code
 .vscode/
+
+# Windows
+Thumbs.db
