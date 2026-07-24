@@ -19,3 +19,6 @@ poppler-26.02.0/
 
 # Windows
 Thumbs.db
+
+output/
+.env
