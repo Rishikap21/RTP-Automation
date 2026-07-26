@@ -23,6 +23,9 @@ if PROJECT_ROOT not in sys.path:
 from processing.document_understanding import understand_document
 from processing.excel_generator import create_excel
 
+from processing.chatbot import ask_chatbot
+from processing.pdf_processor import extract_text,extract_tables
+
 app = FastAPI(
     title="RTP Automation API",
     version="3.0"
@@ -30,6 +33,8 @@ app = FastAPI(
 
 UPLOAD_FOLDER = os.path.join(PROJECT_ROOT, "uploads")
 GENERATED_FOLDER = os.path.join(PROJECT_ROOT, "generated")
+
+document_text = ""
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(GENERATED_FOLDER, exist_ok=True)
@@ -51,6 +56,8 @@ def home():
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+    global document_text
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
     file_path = os.path.join(
         UPLOAD_FOLDER,
@@ -71,6 +78,22 @@ async def upload_file(file: UploadFile = File(...)):
         ".jpeg"
     ]
 
+    # PDF Processing
+    if extension == ".pdf":
+
+        extracted_text = extract_text(file_path)
+        document_text = extracted_text  
+
+        if extracted_text is None:
+            return {
+                "error": "Invalid or corrupted PDF."
+            }
+
+        tables = extract_tables(file_path)
+
+        excel_path = os.path.join(
+            GENERATED_FOLDER,
+            file.filename.replace(".pdf", ".xlsx"))
     if extension not in supported:
         raise HTTPException(
             status_code=400,
@@ -120,7 +143,22 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(
             status_code=500,
             detail=str(e)
-        )
+    )
+
+@app.post("/chat")
+async def chat(request: dict):
+    question = request.get("question")
+
+    if not question:
+        return {"error": "Question is required"}
+
+    answer = ask_chatbot(question,document_text)
+
+    return {
+        "question": question,
+        "answer": answer
+    }
+    
 
 
 @app.get("/download-report/{report_name}")
