@@ -28,6 +28,7 @@ app = FastAPI(
     title="RTP Automation API",
     version="3.0"
 )
+document_text = ""
 
 UPLOAD_FOLDER = os.path.join(PROJECT_ROOT, "uploads")
 GENERATED_FOLDER = os.path.join(PROJECT_ROOT, "generated")
@@ -52,7 +53,7 @@ def home():
     }
 
 
-@app.post("/upload")
+@app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):
     global document_text
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
@@ -81,6 +82,9 @@ async def upload_file(file: UploadFile = File(...)):
 
         extracted_text = extract_text(file_path)
         document_text = extracted_text  
+
+        print("========== DOCUMENT TEXT ==========")
+        print(document_text[:1000])
 
         if extracted_text is None:
             return {
@@ -143,14 +147,19 @@ async def upload_file(file: UploadFile = File(...)):
             detail=str(e)
     )
 
-@app.post("/chat")
+@app.post("/api/chat")
 async def chat(request: dict):
+    global document_text, vector_store
     question = request.get("question")
 
     if not question:
         return {"error": "Question is required"}
 
-    answer = ask_chatbot(question,document_text)
+    try:
+        answer = ask_chatbot(question, vector_store)
+    except Exception as e:
+        print("CHATBOT ERROR:", e)
+        return {"error": str(e)}
 
     return {
         "question": question,

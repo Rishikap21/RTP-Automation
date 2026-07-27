@@ -11,10 +11,16 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from processing.vector_store import create_vector_store
 from processing.document_understanding import understand_document
 from processing.excel_generator import create_excel
 
+from processing.chatbot import ask_chatbot
+from processing.pdf_processor import extract_text
 app = FastAPI(title="RTP Automation AI API Gateway", version="4.2.0")
+
+document_text = ""
+vector_store = None
 
 # Setup CORS for development flexibility
 app.add_middleware(
@@ -197,6 +203,7 @@ async def post_login(req: LoginRequest):
 # 2. Upload Document File to Pipeline Queue
 @app.post("/api/upload")
 async def upload_document(file: UploadFile = File(...)):
+    global document_text,vector_store
     file_id = f"doc_{uuid.uuid4().hex[:6]}"
 
     extension = os.path.splitext(file.filename)[1]
@@ -205,6 +212,9 @@ async def upload_document(file: UploadFile = File(...)):
     contents = await file.read()
     with open(saved_path, "wb") as f:
         f.write(contents)
+    if extension.lower() == ".pdf":
+        document_text = extract_text(saved_path)
+        vector_store = create_vector_store(document_text)
 
     # Run the REAL extraction pipeline (pdf/excel/ocr -> dataframes -> metadata)
     try:
@@ -342,22 +352,28 @@ async def get_download_report(report_id: str):
     return FileResponse(file_path, filename=report["name"], media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 # 9. AI Chatbot queries Contextual response
+
 @app.post("/api/chatbot")
 async def post_chatbot(req: ChatMessageRequest):
-    msg = req.message.lower()
-    
-    # Match keyword response intents
-    if "summarize" in msg or "summary" in msg:
-        answer = "Based on the refinery files context, here is the summary:\n- Valves Q2 vs Q3 shows steady pressure levels.\n- 3 critical O-ring warnings detected in SPEC-UNK-01.\n- Data formats match ASME-B16 pressure regulations."
-    elif "pressure" in msg or "abnormal" in msg:
-        answer = "Telemetry check reports:\n- Valve-772-A: Optimal pressure of 1420 PSI.\n- Pump-001-B: Centrifugal flow speed within margin.\n- Ambiguity Flag: GAUGE-AMB value scanned as '00-R' instead of numeric PSI limits."
-    elif "valve" in msg:
-        answer = "Detected Valve Specifications:\n1. VALVE-772-A: 4-inch Titanium Pressure Relief Valve (Qty: 12, Unit: $1,420)\n2. VALVE-124-T: Direct Action Control Valve Q-type (Qty: 4, Unit: $750)"
-    else:
-        answer = "I've reviewed the knowledge contexts. The pipeline processing contains 1 active document queue. Security credentials rotated recently. Feel free to ask details about O-Ring specs, valves listing, or Excel sheets export status."
-        
-    return {"answer": answer}
+    global document_text, vector_store
 
+    if document_text == "":
+        return {
+            "answer": "Please upload a PDF first."
+        }
+
+    try:
+        answer = ask_chatbot(req.message, vector_store)
+
+        return {
+            "answer": answer
+        }
+
+    except Exception as e:
+        print("CHATBOT ERROR:", e)
+        return {
+            "answer": str(e)
+        }
 # 10. Settings Operators list
 @app.get("/api/settings/operators")
 async def get_operators():
