@@ -1,13 +1,15 @@
 import os
 import sys
-import shutil
 from datetime import datetime
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 
 # --------------------------------------------------
-# Add project root to Python path
+# processing/, uploads/, and generated/ all live at the
+# REPO ROOT -- one level above this file (backend/main.py) --
+# not inside backend/. So PROJECT_ROOT must be the PARENT of
+# this file's own folder, not this folder itself.
 # --------------------------------------------------
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
@@ -64,7 +66,7 @@ async def upload_file(file: UploadFile = File(...)):
     )
 
     with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        buffer.write(await file.read())
 
     extension = os.path.splitext(file.filename)[1].lower()
 
