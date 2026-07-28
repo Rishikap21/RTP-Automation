@@ -1,14 +1,19 @@
-[core]
-	repositoryformatversion = 0
-	filemode = false
-	bare = false
-	logallrefupdates = true
-	symlinks = false
-	ignorecase = true
-[remote "origin"]
-	url = https://github.com/Rishikap21/RTP-Automation.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
-[branch "main"]
-	remote = origin
-	merge = refs/heads/main
-	vscode-merge-base = origin/main
+const APP_CONFIG = {
+  API_BASE_URL: 'http://localhost:8000',
+  REQUEST_TIMEOUT_MS: 3000,
+  ENDPOINTS: {
+    UPLOAD: '/upload',
+    EXTRACT_START: '/extract/start',
+    EXTRACT_STATUS: '/extract/status',
+    EXTRACT_DOWNLOAD: '/extract/download',
+    CHAT: '/chat'
+  },
+  // Securely configured admin credentials
+  ADMIN_EMAIL: 'admin@gmail.com',
+  ADMIN_PASSWORD: 'RTP#Admin2026!Secured'
+};
+function apiUrl(endpoint) {
+  const base = APP_CONFIG.API_BASE_URL.replace(/\/$/, '');
+  const path = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+  return `${base}${path}`;
+}
