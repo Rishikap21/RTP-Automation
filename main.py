@@ -4,6 +4,26 @@ import time
 import random
 from typing import List, Optional
 from datetime import datetime
+
+# Workspace Paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load environment configuration
+ENV_PATH = os.path.join(BASE_DIR, ".env")
+if os.path.exists(ENV_PATH):
+    with open(ENV_PATH, "r", encoding="utf-8") as env_file:
+        for line in env_file:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                os.environ[key.strip()] = value.strip()
+
+if not os.getenv("GOOGLE_API_KEY"):
+    os.environ["GOOGLE_API_KEY"] = "mock_api_key_for_development"
+
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@gmail.com")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "RTP#Admin2026!Secured")
+
 from fastapi import FastAPI, Request, Form, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -31,8 +51,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Workspace Paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
@@ -163,42 +181,35 @@ async def get_index(request: Request):
 
 # ==================== API ENDPOINTS ====================
 
-# 1. Login Authentication
+# 1. Login Authentication (Admin Only)
 @app.post("/api/login")
 async def post_login(req: LoginRequest):
-    # Simplified authentication check
     if not req.email or not req.key:
-        raise HTTPException(status_code=400, detail="Missing credentials")
+        raise HTTPException(status_code=400, detail="Missing email or password")
     
-    # Mock JWT token generation
-    session_token = f"jwt_{uuid.uuid4().hex}"
+    # Strict Admin Credentials Check
+    if req.email.strip().lower() != ADMIN_EMAIL.lower() or req.key != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Invalid admin email or password. Access restricted to Admin only.")
     
-    # Check if matching operator or create temporary operator
-    operator = next((op for op in operators_db if op["email"] == req.email), None)
-    if not operator:
-        operator = {
-            "name": req.email.split('@')[0].capitalize(),
-            "email": req.email,
-            "role": "Operator",
-            "status": "Active",
-            "last_login": "Just now"
-        }
-        operators_db.append(operator)
-    else:
-        operator["status"] = "Active"
-        operator["last_login"] = "Just now"
-        
-    # Append log entry
+    admin_operator = {
+        "name": "System Admin",
+        "email": ADMIN_EMAIL,
+        "role": "Admin",
+        "status": "Active",
+        "last_login": "Just now"
+    }
+    
+    # Log successful admin login
     audit_logs_db.insert(0, {
         "id": f"log_{uuid.uuid4().hex[:6]}",
         "type": "info",
-        "title": "Operator Session Opened",
+        "title": "Admin Session Opened",
         "timestamp": datetime.now().strftime("%I:%M %p"),
-        "details": f"Operator {operator['name']} successfully signed in through gateway portal.",
+        "details": f"Admin ({ADMIN_EMAIL}) successfully logged into RTP Automation Mission Control.",
         "ip": "127.0.0.1"
     })
     
-    return {"token": session_token, "operator": operator}
+    return {"success": True, "operator": admin_operator}
 
 # 2. Upload Document File to Pipeline Queue
 @app.post("/api/upload")
