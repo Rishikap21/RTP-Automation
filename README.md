@@ -429,19 +429,29 @@ The retrieved document context and the user's question are sent to Google Gemini
 
 # Chatbot Project Structure
 
-processing/ chatbot.py                
+```
+processing/ chatbot.py 
+```               
 - Handles question answering using Gemini
 
- vector_store.py           
+ ```
+ vector_store.py 
+ ```          
 - Creates embeddings and FAISS vector database
 
+ ```
  document_understanding.py
+ ```
 - Supplies extracted document text
 
- main.py                       
+ ```
+ main.py 
+ ```                      
 - Chatbot API endpoint
 
- requirements.txt              
+```
+ requirements.txt 
+```             
 - Chatbot dependencies
 
 ---
@@ -450,20 +460,26 @@ processing/ chatbot.py
 
 ### Ask Question
 
-- POST /api/chatbot
+ ```
+  POST /api/chatbot 
+```
 
 ### Request Body
 
-{
+```
+ {
     "message": "What is the total quantity mentioned in the document?",
     "context_files": []
 }
+ ```
 
 ### Response
 
+```
 {
     "answer": "The total quantity mentioned in the uploaded document is 250 units."
 }
+```
 
 ---
 
