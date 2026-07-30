@@ -429,14 +429,20 @@ The retrieved document context and the user's question are sent to Google Gemini
 
 # Chatbot Project Structure
 
-processing/
-│
-├── chatbot.py                # Handles question answering using Gemini
-├── vector_store.py           # Creates embeddings and FAISS vector database
-├── document_understanding.py # Supplies extracted document text
-│
-main.py                       # Chatbot API endpoint
-requirements.txt              # Chatbot dependencies
+processing/ chatbot.py                
+- Handles question answering using Gemini
+
+ vector_store.py           
+- Creates embeddings and FAISS vector database
+
+ document_understanding.py
+- Supplies extracted document text
+
+ main.py                       
+- Chatbot API endpoint
+
+ requirements.txt              
+- Chatbot dependencies
 
 ---
 
