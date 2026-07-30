@@ -22,6 +22,15 @@ app = FastAPI(title="RTP Automation AI API Gateway", version="4.2.0")
 document_text = ""
 vector_store = None
 
+def dataframes_to_text(dataframes):
+    text = ""
+
+    for df in dataframes:
+        text += df.fillna("").to_string(index=False)
+        text += "\n\n"
+
+    return text
+
 # Setup CORS for development flexibility
 app.add_middleware(
     CORSMiddleware,
@@ -212,13 +221,12 @@ async def upload_document(file: UploadFile = File(...)):
     contents = await file.read()
     with open(saved_path, "wb") as f:
         f.write(contents)
-    if extension.lower() == ".pdf":
-        document_text = extract_text(saved_path)
-        vector_store = create_vector_store(document_text)
-
+    
     # Run the REAL extraction pipeline (pdf/excel/ocr -> dataframes -> metadata)
     try:
         result = understand_document(saved_path, extension)
+        document_text = dataframes_to_text(result["dataframes"])
+        vector_store = create_vector_store(document_text)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Extraction failed: {e}")
 
