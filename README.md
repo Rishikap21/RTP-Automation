@@ -8,6 +8,37 @@ The project follows a hybrid extraction approach, using local extraction methods
 
 ---
 
+## Admin Authentication Credentials
+
+To access the restricted Mission Control Administrative Dashboard, use the following credentials:
+
+- **Admin Email**: `admin@gmail.com`
+- **Admin Password**: `RTP#Admin2026!Secured`
+
+---
+
+## Frontend & API Generation Structure
+
+The application features a modern Single-Page Application (SPA) dashboard connected to a FastAPI backend gateway (`main.py` & `backend/api_main.py`).
+
+### 1. Frontend Architecture (`templates/` & `static/`)
+- **`templates/index.html`**: Premium HTML5 Dashboard with modern typography, glassmorphism UI, side navigation, upload pipeline dropzone, data extraction table preview, Excel report manager, AI chatbot interface, settings panel, and real-time audit log viewer.
+- **`static/main.js`**: Application logic handling authentication state, async REST API calls via `APIClient`, file upload pipeline, table rendering, live progress tracking, chatbot streaming, and settings management.
+- **`static/style.css`**: Styling rules, responsive container layouts, custom scrollbars, animations, and micro-interactions.
+
+### 2. API Generation & Core Endpoints
+- **Authentication Gateway**: `POST /api/login` - Authenticates admin operators and issues session credentials.
+- **Document Pipeline Upload**: `POST /api/upload` - Receives PDF, Excel, or Image files into `uploads/`, triggers hybrid OCR/AI extraction, and queues records.
+- **Pipeline Queue Management**: `GET /api/queue` & `POST /api/queue/process` - Fetches queue progress and initiates automated batch table extraction.
+- **Extracted Data Viewer**: `GET /api/extraction/{file_id}` - Returns parsed structured rows, columns, and flagged confidence values.
+- **Excel Spreadsheet Generator**: `POST /api/excel/convert` - Converts extracted JSON dataframes into styled `.xlsx` reports stored in `generated/`.
+- **Report Manager & Download**: `GET /api/reports` & `GET /api/reports/download/{report_id}` - Lists and downloads generated Excel workbooks.
+- **RAG AI Chatbot**: `POST /api/chatbot` - Contextual vector-store search and Gemini LLM question-answering over uploaded document text.
+- **Admin Settings & Security**: `GET/POST /api/settings/operators`, `GET/PUT /api/settings/permissions`, `POST /api/settings/rotate-key` - Operator user management, module access toggles, and API security key rotation.
+- **Audit Logging**: `GET /api/logs` - System action log trail for operational monitoring.
+
+---
+
 # Features
 
 - Upload PDF documents
@@ -88,6 +119,10 @@ The project follows a hybrid extraction approach, using local extraction methods
 ```
 RTP-Automation/
 │
+├── backend/
+│   ├── __init__.py
+│   └── api_main.py
+│
 ├── generated/
 ├── uploads/
 │
@@ -102,7 +137,11 @@ RTP-Automation/
 │   └── table_extractor.py
 │
 ├── static/
+│   ├── main.js
+│   └── style.css
+│
 ├── templates/
+│   └── index.html
 │
 ├── main.py
 ├── requirements.txt
@@ -278,7 +317,9 @@ POST /api/chatbot
 
 ---
 
-# Author
+# Authors
+
+**Ashitha**
 
 **Rishika P**
 
