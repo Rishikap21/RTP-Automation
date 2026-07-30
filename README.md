@@ -317,11 +317,204 @@ POST /api/chatbot
 
 ---
 
+# AI Chatbot Module
+
+The RTP Automation project includes an AI-powered chatbot that enables users to interact with uploaded documents using natural language. Instead of manually searching through extracted tables, users can ask questions related to the uploaded document and receive context-aware responses.
+
+The chatbot combines semantic search with Google's Gemini Large Language Model to retrieve relevant information and generate accurate answers.
+
+---
+
+# Chatbot Features
+
+- Natural language question answering
+- Context-aware document search
+- Semantic similarity retrieval
+- Google Gemini LLM integration
+- Vector embedding generation
+- FAISS vector database
+- Automatic document indexing after upload
+- Retrieval-Augmented Generation (RAG) based responses
+
+---
+
+# Chatbot Workflow
+
+             User Uploads Document
+                     │
+                     ▼
+         Document Text Extraction
+                     │
+                     ▼
+      Convert DataFrames to Plain Text
+                     │
+                     ▼
+      Split Text into Smaller Chunks
+                     │
+                     ▼
+ Generate Gemini Embeddings for Chunks
+                     │
+                     ▼
+ Store Embeddings in FAISS Vector Store
+                     │
+                     ▼
+          User Asks a Question
+                     │
+                     ▼
+     Similarity Search (Top Relevant Chunks)
+                     │
+                     ▼
+      Send Context + Question to Gemini
+                     │
+                     ▼
+         AI Generates Final Answer
+                     │
+                     ▼
+         Response Displayed to User
+
+---
+
+# Chatbot Architecture
+
+### Document Processing
+
+After a document is uploaded and processed, all extracted tables are converted into plain text. The extracted content is then prepared for semantic indexing.
+
+### Text Chunking
+
+The document text is divided into smaller overlapping chunks using LangChain's Recursive Character Text Splitter. Chunking improves retrieval accuracy by allowing the chatbot to search only the most relevant portions of the document instead of the entire content.
+
+### Embedding Generation
+
+Each text chunk is converted into high-dimensional vector embeddings using Google's Gemini Embedding Model (gemini-embedding-001). These embeddings capture the semantic meaning of the document rather than relying on keyword matching.
+
+### Vector Database
+
+The generated embeddings are stored in a FAISS Vector Store, enabling fast similarity searches across the uploaded document. This allows efficient retrieval even for large documents.
+
+### Semantic Search
+
+Whenever the user submits a question, the chatbot converts the query into an embedding and performs a similarity search in the FAISS vector database. The top relevant document chunks are selected as contextual information.
+
+### AI Response Generation
+
+The retrieved document context and the user's question are sent to Google Gemini 3.5 Flash, which generates a context-aware answer based only on the retrieved information from the uploaded document.
+
+---
+
+# Technologies Used
+
+### Backend
+
+- FastAPI
+- Python
+
+### AI Framework
+
+- LangChain
+
+### Embedding Model
+
+- Gemini Embedding-001
+
+### Vector Database
+
+- FAISS
+
+### Large Language Model
+
+- Google Gemini 3.5 Flash
+
+---
+
+# Chatbot Project Structure
+
+processing/
+│
+├── chatbot.py                # Handles question answering using Gemini
+├── vector_store.py           # Creates embeddings and FAISS vector database
+├── document_understanding.py # Supplies extracted document text
+│
+main.py                       # Chatbot API endpoint
+requirements.txt              # Chatbot dependencies
+
+---
+
+# Chatbot API Endpoint
+
+### Ask Question
+
+- POST /api/chatbot
+
+### Request Body
+
+{
+    "message": "What is the total quantity mentioned in the document?",
+    "context_files": []
+}
+
+### Response
+
+{
+    "answer": "The total quantity mentioned in the uploaded document is 250 units."
+}
+
+---
+
+# Chatbot Processing Flow
+
+### Document Upload
+
+- Upload document
+- Extract structured data
+- Convert extracted data into text
+
+### Vector Indexing
+
+- Split document into chunks
+- Generate Gemini embeddings
+- Store embeddings in FAISS
+
+### Question Answering
+
+- Receive user query
+- Perform semantic similarity search
+- Retrieve relevant document chunks
+- Send context and question to Gemini
+- Generate AI response
+
+---
+
+# Current Capabilities
+
+- Semantic document search
+- Context-aware question answering
+- Gemini-powered AI responses
+- FAISS vector indexing
+- Automatic document embedding generation
+- Fast retrieval of relevant information
+
+---
+
+# Future Enhancements
+
+- Multi-document chatbot
+- Conversation history
+- Source citation for answers
+- Streaming AI responses
+- Persistent vector database
+- Support for multilingual queries
+
+---
+
+
 # Authors
 
 **Ashitha**
 
 **Rishika P**
+
+**Bhoomika V**
 
 B.Tech Computer Science Engineering
 
