@@ -207,12 +207,17 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const email = document.getElementById('operator-email').value;
     const key = document.getElementById('operator-key').value;
     const submitBtn = document.getElementById('login-submit-btn');
+    const errorMsgBox = document.getElementById('login-error-msg');
+    const errorMsgText = document.getElementById('login-error-text');
+
+    // Reset error box
+    if (errorMsgBox) errorMsgBox.classList.add('hidden');
 
     // Add loading state
     const originalBtnHTML = submitBtn.innerHTML;
     submitBtn.innerHTML = `
         <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-        <span>Authenticating...</span>
+        <span>Authenticating Admin...</span>
     `;
     submitBtn.disabled = true;
 
@@ -220,17 +225,19 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         const data = await APIClient.login(email, key);
         state.session.active = true;
         state.session.operator = data.operator;
-        state.session.token = data.token;
 
-        document.getElementById('sidebar-username').innerText = data.operator.name;
-        showToast(`Operator session established: ${data.operator.name}`);
+        document.getElementById('sidebar-username').innerText = data.operator.name || 'Admin';
+        showToast(`Admin authenticated successfully. Welcome to Mission Control!`);
         
         window.switchPanel('dashboard');
         
         // Start background polling for upload pipeline updates
         startQueuePolling();
     } catch (error) {
-        // Handled inside API client
+        if (errorMsgBox && errorMsgText) {
+            errorMsgText.innerText = error.message || 'Invalid Admin credentials.';
+            errorMsgBox.classList.remove('hidden');
+        }
     } finally {
         submitBtn.innerHTML = originalBtnHTML;
         submitBtn.disabled = false;
@@ -254,8 +261,15 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     state.session.active = false;
     state.session.operator = null;
     state.session.token = null;
+    const emailInput = document.getElementById('operator-email');
+    const keyInput = document.getElementById('operator-key');
+    if (emailInput) emailInput.value = '';
+    if (keyInput) keyInput.value = '';
+    const errorMsgBox = document.getElementById('login-error-msg');
+    if (errorMsgBox) errorMsgBox.classList.add('hidden');
+    
     window.switchPanel('login');
-    showToast('Operator logged out successfully.');
+    showToast('Admin logged out successfully.');
 });
 
 // ==================== B. DASHBOARD PANEL ====================

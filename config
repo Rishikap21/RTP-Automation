@@ -1,0 +1,19 @@
+const APP_CONFIG = {
+  API_BASE_URL: 'http://localhost:8000',
+  REQUEST_TIMEOUT_MS: 3000,
+  ENDPOINTS: {
+    UPLOAD: '/upload',
+    EXTRACT_START: '/extract/start',
+    EXTRACT_STATUS: '/extract/status',
+    EXTRACT_DOWNLOAD: '/extract/download',
+    CHAT: '/chat'
+  },
+  // Securely configured admin credentials
+  ADMIN_EMAIL: 'admin@gmail.com',
+  ADMIN_PASSWORD: 'RTP#Admin2026!Secured'
+};
+function apiUrl(endpoint) {
+  const base = APP_CONFIG.API_BASE_URL.replace(/\/$/, '');
+  const path = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+  return `${base}${path}`;
+}
